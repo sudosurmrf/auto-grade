@@ -5,7 +5,7 @@ const { cloneRepository, downloadRepositoryZip } = require('../services/cloneSer
 const { autoGrade } = require('../tests/autoGrader');
 
 exports.gradeRepo = async (req, res) => {
-  const { repoUrl } = req.body;
+  const { repoUrl, moduleNumber } = req.body;
   if (!repoUrl) {
     return res.status(400).json({ error: 'repoUrl is required' });
   }
@@ -60,7 +60,7 @@ exports.gradeRepo = async (req, res) => {
       }
     }
     // this is where the autograding part will go when I figure out how to make this lol.
-    const gradingResult = await autoGrade(projectPath);
+    const gradingResult = await autoGrade(projectPath, moduleNumber || '1');
     // return the result of the grade + a link to preview. 
     return res.json({
       success: gradingResult.every((check) => check.pass),

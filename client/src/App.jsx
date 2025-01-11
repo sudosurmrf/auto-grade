@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { useGradeRepoMutation } from './services/graderApi';
 
 function App() {
+  const [moduleNumber, setModuleNumber] = useState('1');
   const [gradeRepo, { data, isLoading, isError, error }] = useGradeRepoMutation();
   const [repoUrl, setRepoUrl] = useState('');
 
   const handleDownloadAndTest = async () => {
     if (!repoUrl) return;
-    await gradeRepo(repoUrl);
+    await gradeRepo({repoUrl, moduleNumber});
   };
 
   if(isLoading){
@@ -22,6 +23,19 @@ function App() {
   return (
     <div style={{ width: '100%', margin: '0 auto' }}>
       <h1>Auto Grader</h1>
+
+      <label>
+        Assignment:
+        <select
+          value={assignmentNumber}
+          onChange={(e) => setAssignmentNumber(e.target.value)}
+          style={{ marginLeft: '10px', marginBottom: '10px' }}
+        >
+          <option value="1">Module 1</option>
+          <option value="2">Module 2</option>
+          <option value="3">Module 3</option>
+        </select>
+      </label>
       <input
         type="text"
         placeholder="Paste GitHub URL here..."
@@ -32,11 +46,11 @@ function App() {
       <button onClick={handleDownloadAndTest} disabled={isLoading}>
         {isLoading ? 'Processing...' : 'Download & Test'}
       </button>
-      {isError && (
-        <div style={{ color: 'red', marginTop: '10px' }}>
+      {/* {isError && (
+        <div>
           Error: {error?.data?.error || error?.error || 'Something went wrong'}
         </div>
-      )}
+      )} */}
       {data && (
         <div style={{ marginTop: '20px' }}>
           <h3>Grading Results</h3>

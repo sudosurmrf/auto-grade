@@ -6,10 +6,10 @@ const graderApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     gradeRepo: builder.mutation({
-      query: (repoUrl) => ({
+      query: ({repoUrl, moduleNumber}) => ({
         url: '/api/grade',
         method: 'POST',
-        body: { repoUrl },
+        body: { repoUrl, moduleNumber },
       }),
     }),
   }),
