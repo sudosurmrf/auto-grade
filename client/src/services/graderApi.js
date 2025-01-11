@@ -12,9 +12,16 @@ const graderApi = createApi({
         body: { repoUrl, moduleNumber },
       }),
     }),
+    getFileStructure: builder.query({
+      query: (repoUrl) => ({
+        url: '/api/file-structure',
+        method: 'POST',
+        body: { repoUrl },
+      }),
+    }),
   }),
 });
 
-export const { useGradeRepoMutation } = graderApi;
+export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery } = graderApi;
 
 export default graderApi;

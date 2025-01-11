@@ -1,13 +1,13 @@
 const moduleCriteria = {
-  '1': [
+  '3': [
     { id: 'hasIndexHtml', description: 'Project must include index.html' },
     { id: 'hasStylesCss', description: 'Project must include styles.css' },
   ],
-  '2': [
+  '4': [
     { id: 'hasIndexHtml', description: 'Project must include index.html' },
     { id: 'hasJavascript', description: 'Project must include a main.js file' },
   ],
-  '3': [
+  '5': [
     { id: 'hasReactApp', description: 'Project must be a React project' },
   ],
 };
