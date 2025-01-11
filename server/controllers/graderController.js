@@ -43,6 +43,7 @@ exports.gradeRepo = async (req, res) => {
         //and then serve it as an html file over express.
         previewUrl = `http://localhost:5000/static/${projectId}/dist/index.html`;
       }
+      // had to add this line because the repo paths are not relative to this project, but instead relative to their own projects. 
       const indexFilePath = path.join(distPath, 'index.html');
       if (fs.existsSync(indexFilePath)) {
         let indexContent = fs.readFileSync(indexFilePath, 'utf-8');
