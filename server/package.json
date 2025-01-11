@@ -14,9 +14,15 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.5.0",
+    "child_process": "^1.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "path": "^0.12.7"
+    "jszip": "^3.10.1",
+    "path": "^0.12.7",
+    "react-redux": "^9.2.0",
+    "simple-git": "^3.27.0",
+    "uuidv4": "^6.2.13"
   }
 }
