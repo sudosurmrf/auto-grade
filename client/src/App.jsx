@@ -10,8 +10,17 @@ function App() {
     await gradeRepo(repoUrl);
   };
 
+  if(isLoading){
+    return <p>Loading...</p>
+  }
+  if(isError){
+    return <p>error: {error}</p>
+  }
+
+  console.log(data);
+
   return (
-    <div style={{ width: '600px', margin: '0 auto' }}>
+    <div style={{ width: '100%', margin: '0 auto' }}>
       <h1>Auto Grader</h1>
       <input
         type="text"
@@ -50,7 +59,7 @@ function App() {
               <iframe
                 title="project-preview"
                 src={data.previewUrl}
-                style={{ width: '100%', height: '400px', border: '1px solid #ddd' }}
+                style={{ width: '100%', height: '1200px', border: '1px solid #ddd' }}
               ></iframe>
             </>
           )}

@@ -41,13 +41,21 @@ exports.gradeRepo = async (req, res) => {
       const distPath = path.join(projectPath, 'dist');
       if (fs.existsSync(distPath)) {
         //and then serve it as an html file over express.
-        previewUrl = `http://localhost:3000/static/${projectId}/dist/index.html`;
+        previewUrl = `http://localhost:5000/static/${projectId}/dist/index.html`;
       }
+      const indexFilePath = path.join(distPath, 'index.html');
+      if (fs.existsSync(indexFilePath)) {
+        let indexContent = fs.readFileSync(indexFilePath, 'utf-8');
+        indexContent = indexContent.replace(/href="\/assets\//g, 'href="./assets/');
+        indexContent = indexContent.replace(/src="\/assets\//g, 'src="./assets/');
+        fs.writeFileSync(indexFilePath, indexContent, 'utf-8');
+      }
+
     } else {
       // else because if its not react, its either html, css, js or some variation of that. 
       const indexPath = path.join(projectPath, 'index.html');
       if (fs.existsSync(indexPath)) {
-        previewUrl = `http://localhost:3000/static/${projectId}/index.html`;
+        previewUrl = `http://localhost:5000/static/${projectId}/index.html`;
       }
     }
     // this is where the autograding part will go when I figure out how to make this lol.
