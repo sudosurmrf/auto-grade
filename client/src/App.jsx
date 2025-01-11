@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGradeRepoMutation, useLazyGetFileStructureQuery } from './services/graderApi';
 import ProjectCard from './fileViewer/ProjectCard';
+import MultiFileUploader from './components/MultipleFileUploader';
 
 function App() {
   //allows up to 50 proj currently (memory intensive, so be careful)
@@ -16,7 +17,7 @@ function App() {
   );
 
   const [gradeRepo] = useGradeRepoMutation(); 
-  const [fetchFileStructure] = useLazyGetFileStructureQuery();
+  // const [fetchFileStructure] = useLazyGetFileStructureQuery();
 
   //logic to handle the repoUrl or the moduleNumber change
   const handleRepoUrlChange = (index, newUrl) => {
@@ -92,10 +93,39 @@ function App() {
     ]);
   };
 
+  const handleLinkExtract = async (links) => {
+
+    const updated = [...projects];
+    for (const link of links) {
+      // Find the first empty slot:
+      handleAddProject();
+      const emptyIdx = updated.findIndex((p) => !p.repoUrl);
+      if (emptyIdx >= 0) {
+        updated[emptyIdx].repoUrl = link;
+      //  await handleAutoGrade(emptyIdx);
+      } else {
+        // creates a new proj
+        if (updated.length < 50) {
+          updated.push({
+            id: String(updated.length),
+            repoUrl: link,
+          });
+        } else {
+          alert('Max 50 projects reached. Some links are ignored.');
+          break;
+        }
+      }
+    }
+    setProjects(updated);
+  };
+
+
   return (
     <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '20px' }}>
       <h1>TA Too EZ</h1>
       <p>Enter up to 50 GitHub links - let me know if there are features you want added</p>
+
+      <MultiFileUploader onLinksExtracted={handleLinkExtract} />
 
       <div
         style={{
