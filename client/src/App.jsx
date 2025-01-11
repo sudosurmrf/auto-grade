@@ -93,15 +93,19 @@ function App() {
     ]);
   };
 
-  const handleLinkExtract = async (links) => {
+  const handleLinkExtract = async (links, studentNames) => {
 
     const updated = [...projects];
-    for (const link of links) {
+    for (let i = 0; i < links.length; i++) {
+      const link = links[i];
+      const studentName = studentNames[i] || 'error find student';
+    
       // Find the first empty slot:
       handleAddProject();
       const emptyIdx = updated.findIndex((p) => !p.repoUrl);
       if (emptyIdx >= 0) {
         updated[emptyIdx].repoUrl = link;
+        updated[emptyIdx].studentName = studentName
       //  await handleAutoGrade(emptyIdx);
       } else {
         // creates a new proj
@@ -109,6 +113,7 @@ function App() {
           updated.push({
             id: String(updated.length),
             repoUrl: link,
+            studentName,
           });
         } else {
           alert('Max 50 projects reached. Some links are ignored.');
@@ -142,6 +147,7 @@ function App() {
               key={project.id}
               style={{ border: '1px solid #ccc', padding: '10px' }}
             >
+              <h1>{project.studentName}</h1>
               <label style={{ display: 'block', marginBottom: '5px' }}>
                 Module:
               </label>

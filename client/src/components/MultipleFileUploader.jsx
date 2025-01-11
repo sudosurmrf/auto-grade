@@ -8,6 +8,7 @@ export default function MultiFileUploader({ onLinksExtracted }) {
     if (!files.length) return;
 
     const allLinks = [];
+    const allNames = [];
 
     for (const file of files) {
       if (file.type !== 'text/html') continue;
@@ -22,10 +23,14 @@ export default function MultiFileUploader({ onLinksExtracted }) {
         }
         allLinks.push(link);
       }
+      const nameMatch = content.match(/<h1>.*:\s*(.+?)<\/h1>/i);
+      if (nameMatch && nameMatch[1]) {
+        allNames.push(nameMatch[1].trim());
+      }
     }
 
     if (allLinks.length > 0 && onLinksExtracted) {
-      onLinksExtracted(allLinks);
+      onLinksExtracted(allLinks, allNames);
     }
     fileInputRef.current.value = '';
   };
