@@ -13,11 +13,25 @@ const {
   downloadError,
 } = cloneActions;
 
+const deleteFolderRecursive = (folderPath) => {
+  if(fs.existsSync(folderPath)) {
+    fs.readdirSync(folderPath).forEach((file) => {
+      const currentPath = path.join(folderPath, file);
+      if (fs.lstatSync(currentPath).isDirectory()) {
+        deleteFolderRecursive(currentPath);
+      } else {
+        fs.unlinkSync(currentPath);
+      }
+    });
+    fs.rmdirSync(folderPath);
+  }
+}
 //this tries to clone using simple-git
 exports.cloneRepository = (repoUrl, destination) => {
   return new Promise(async (resolve, reject) => {
     store.dispatch(cloneStarted({ repoUrl, destination }));
     try {
+      deleteFolderRecursive(destination);
       const git = simpleGit();
       await git.clone(repoUrl, destination);
       // on success dispatch the clone action
@@ -37,6 +51,7 @@ exports.downloadRepositoryZip = async (repoUrl, destination) => {
   store.dispatch(downloadStarted({ repoUrl, destination }));
 
   try {
+    deleteFolderRecursive(destination);
     // structure of zip url should be: https://codeload.github.com/<owner>/<repo>/zip/refs/heads/main
     const zipUrl = repoUrl
       .replace('https://github.com/', 'https://codeload.github.com/')
