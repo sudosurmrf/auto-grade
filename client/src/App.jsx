@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGradeRepoMutation, useLazyGetFileStructureQuery } from './services/graderApi';
+import ProjectCard from './fileViewer/ProjectCard';
 
 function App() {
   //allows up to 50 proj currently (memory intensive, so be careful)
@@ -56,27 +57,6 @@ function App() {
     }
   };
 
-  // logic to handle showing file structure 
-  const handleShowFileStructure = async (index) => {
-    const project = projects[index];
-    if (!project.repoUrl) {
-      alert('Please enter a GitHub URL first.');
-      return;
-    }
-
-    try {
-      const { data } = await fetchFileStructure(project.repoUrl);
-      if (data) {
-        setProjects((prev) =>
-          prev.map((p, i) => (i === index ? { ...p, fileStructure: data } : p))
-        );
-      }
-    } catch (error) {
-      console.error(error);
-      alert('Failed to fetch file structure.');
-    }
-  };
-
   // set a manual grade using this logic. Will connect it later to selenium for auto inputs. 
   const handleManualGrade = (index) => {
     const grade = prompt('Enter a grade (0-100) for this project:');
@@ -90,33 +70,6 @@ function App() {
       prev.map((p, i) =>
         i === index ? { ...p, manualGrade: numericGrade } : p
       )
-    );
-  };
-
-  // fs render
-  const renderFileStructure = (fileStructure) => {
-    if (!fileStructure) return null;
-    return (
-      <div style={{ marginTop: '8px', border: '1px solid #ccc', padding: '8px' }}>
-        <h4>File Structure:</h4>
-        {fileStructure.files?.map((file, idx) => (
-          <div key={idx} style={{ marginBottom: '8px' }}>
-            <strong>{file.path}</strong>
-            <pre
-              style={{
-                background: '#f5f5f5',
-                padding: '8px',
-                maxHeight: '150px',
-                overflow: 'auto',
-                border: '1px solid #ddd',
-                marginTop: '4px',
-              }}
-            >
-{file.content}
-            </pre>
-          </div>
-        ))}
-      </div>
     );
   };
 
@@ -190,13 +143,6 @@ function App() {
                 Auto Grade
               </button>
 
-              <button
-                onClick={() => handleShowFileStructure(index)}
-                style={{ marginRight: '10px' }}
-              >
-                Show File Structure
-              </button>
-
               <button onClick={() => handleManualGrade(index)}>
                 Manual Grade
               </button>
@@ -228,8 +174,7 @@ function App() {
                   </ul>
                 </div>
               )}
-              {renderFileStructure(project.fileStructure)}
-
+            
               {/* this is for rendering each proj in an iframe */}
               {previewUrl && (
                 <div style={{ marginTop: '10px' }}>
@@ -245,6 +190,7 @@ function App() {
                   />
                 </div>
               )}
+              <ProjectCard project={project}/>
             </div>
           );
         })}

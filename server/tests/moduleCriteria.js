@@ -12,4 +12,4 @@ const moduleCriteria = {
   ],
 };
 
-export default moduleCriteria;
+module.exports = moduleCriteria;

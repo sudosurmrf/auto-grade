@@ -1,8 +1,8 @@
 const path = require('path');
 const fs = require('fs');
-const { v4: uuidv4 } = require('uuid');
 const { cloneRepository, downloadRepositoryZip } = require('../services/cloneService');
 const { autoGrade } = require('../tests/autoGrader');
+const { parseRepoUrl } = require('../utils/parseRepoUrl');
 
 exports.gradeRepo = async (req, res) => {
   const { repoUrl, moduleNumber } = req.body;
@@ -11,8 +11,8 @@ exports.gradeRepo = async (req, res) => {
   }
 
   try {
-    const projectId = uuidv4();
-    const projectPath = path.join(__dirname, '..', 'projects', projectId);
+    const projectName = parseRepoUrl(repoUrl);
+    const projectPath = path.join(__dirname, '..', 'projects', projectName);
     await cloneRepository(repoUrl, projectPath);
 
     //   could use a zip folder if needed if github doesn't work. (below is the code needed)
@@ -41,7 +41,7 @@ exports.gradeRepo = async (req, res) => {
       const distPath = path.join(projectPath, 'dist');
       if (fs.existsSync(distPath)) {
         //and then serve it as an html file over express.
-        previewUrl = `http://localhost:5000/static/${projectId}/dist/index.html`;
+        previewUrl = `http://localhost:5000/static/${projectName}/dist/index.html`;
       }
       // had to add this line because the repo paths are not relative to this project, but instead relative to their own projects. 
       const indexFilePath = path.join(distPath, 'index.html');
@@ -56,7 +56,7 @@ exports.gradeRepo = async (req, res) => {
       // else because if its not react, its either html, css, js or some variation of that. 
       const indexPath = path.join(projectPath, 'index.html');
       if (fs.existsSync(indexPath)) {
-        previewUrl = `http://localhost:5000/static/${projectId}/index.html`;
+        previewUrl = `http://localhost:5000/static/${projectName}/index.html`;
       }
     }
     // this is where the autograding part will go when I figure out how to make this lol.
