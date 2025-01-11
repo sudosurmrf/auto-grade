@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const app = express();
+const debugRoutes = require('./debugRoutes.js');
+const graderRoutes = require('./graderRoutes.js');
 
 
-app.use('/clone-logs', './debugRoutes.js');
-app.use('/grade', './graderRoutes.js');
+router.use('/clone-logs', debugRoutes);
+router.use('/grade', graderRoutes);
 
 module.exports = router;

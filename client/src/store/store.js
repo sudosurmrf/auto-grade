@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import graderApi from './services/graderApi';
+import graderApi from '../services/graderApi';
 
 const store = configureStore({
   reducer: {
