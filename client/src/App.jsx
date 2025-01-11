@@ -27,8 +27,8 @@ function App() {
       <label>
         Assignment:
         <select
-          value={assignmentNumber}
-          onChange={(e) => setAssignmentNumber(e.target.value)}
+          value={moduleNumber}
+          onChange={(e) => setModuleNumber(e.target.value)}
           style={{ marginLeft: '10px', marginBottom: '10px' }}
         >
           <option value="1">Module 1</option>
