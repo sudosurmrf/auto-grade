@@ -3,6 +3,7 @@ const simpleGit = require('simple-git');
 const fs = require('fs');
 const path = require('path');
 const JSZip = require('jszip');
+const { adjustGitUrlUntilUsernameMatches, parseGitHubUsername } = require('../utils/parseRepoUrl');
 const { store, cloneActions } = require('../store');
 const {
   cloneStarted,
@@ -26,6 +27,7 @@ const deleteFolderRecursive = (folderPath) => {
     fs.rmdirSync(folderPath);
   }
 }
+
 //this tries to clone using simple-git
 const cloneRepository = (repoUrl, destination) => {
   return new Promise(async (resolve, reject) => {
@@ -44,6 +46,34 @@ const cloneRepository = (repoUrl, destination) => {
     }
   });
 };
+
+
+const safeCloneRepo = async (repoUrl, destination) => {
+  const userName = parseGitHubUsername(repoUrl);
+  try {
+    await cloneRepository(repoUrl, destination);
+    console.log('cloned using original URL:', repoUrl);
+    return repoUrl; 
+  } catch (err1) {
+    console.error('Initial clone attempt failed:', err1);
+
+    //if cloning url fails, walk back subdirs
+    const adjustedUrl = adjustGitUrlUntilUsernameMatches(repoUrl, userName);
+    if (adjustedUrl === repoUrl) {
+      throw new Error(`clone failed, couldnt deconstruct further: ${err1.message}`);
+    }
+
+    console.log('Retrying clone with adjusted URL:', adjustedUrl);
+    try {
+      await cloneRepository(adjustedUrl, destination);
+      console.log('clone with adjusted URL:', adjustedUrl);
+      return adjustedUrl; 
+    } catch (err2) {
+      console.error('clone failed again with adjusted url:', err2);
+      throw err2;
+    }
+  }
+}
 
 //downloads the zip as a fallback
 const downloadRepositoryZip = async (repoUrl, destination) => {
@@ -96,4 +126,4 @@ const downloadRepositoryZip = async (repoUrl, destination) => {
   }
 };
 
-module.exports = {deleteFolderRecursive, cloneRepository, downloadRepositoryZip};
+module.exports = {deleteFolderRecursive, cloneRepository, downloadRepositoryZip, safeCloneRepo};

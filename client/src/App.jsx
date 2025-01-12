@@ -137,11 +137,82 @@ const App = () => {
     }
   }
 
+  const handleAutoGradeAll = async () => {
+    // makes copy for mutating in place
+    let newProjects = [...projects];
+
+    // sperates projs into success and fails - will adjust later
+    let successfulProjects = [];
+    let failedProjects = [];
+
+    for (let i = 0; i < newProjects.length; i++) {
+      const project = newProjects[i];
+
+      if (!project.repoUrl) {
+        console.warn('Skipping project with no repoUrl:', project);
+        failedProjects.push({
+          ...project,
+          autoGradeResult: {
+            success: false,
+            checks: [],
+            error: 'No repo URL provided',
+          },
+        });
+        continue;
+      }
+
+      try {
+        const { data } = await gradeRepo({
+          repoUrl: project.repoUrl,
+          nestedFolder,
+          moduleNumber: project.moduleNumber,
+        });
+        if (!data) {
+          console.warn('No data returned for project:', project.repoUrl);
+          failedProjects.push({
+            ...project,
+            autoGradeResult: {
+              success: false,
+              checks: [],
+              error: 'No data returned',
+            },
+          });
+          continue;
+        }
+        if (data.success) {
+          successfulProjects.push({
+            ...project,
+            autoGradeResult: data,
+          });
+        } else {
+          failedProjects.push({
+            ...project,
+            autoGradeResult: data,
+          });
+        }
+      } catch (error) {
+        console.error('Error grading project:', project.repoUrl, error);
+        failedProjects.push({
+          ...project,
+          autoGradeResult: {
+            success: false,
+            checks: [],
+            error: error.message || 'Unknown error',
+          },
+        });
+      }
+    }
+    newProjects = [...successfulProjects, ...failedProjects];
+    setProjects(newProjects);
+  };
+
+
   return (
     <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '20px' }}>
       <h1>TA Too EZ</h1>
       <p>Enter up to 50 GitHub links - let me know if there are features you want added</p>
     <button onClick={() => clearProjectData()}>Clear All Project Data</button>
+    <button onClick={() => handleAutoGradeAll()}>Grade All / Render All</button>
       <MultiFileUploader onLinksExtracted={handleLinkExtract} />
 
       <div

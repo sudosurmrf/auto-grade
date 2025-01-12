@@ -1,8 +1,9 @@
 const path = require('path');
 const fs = require('fs');
-const { cloneRepository, downloadRepositoryZip } = require('../services/cloneService');
+const { downloadRepositoryZip, safeCloneRepo} = require('../services/cloneService');
 const { autoGrade } = require('../tests/autoGrader');
 const { parseRepoUrl } = require('../utils/parseRepoUrl');
+const { attemptBuildOneLevelDown } = require('../utils/parseRepoUrl');
 const express = require('express');
 const app = express();
 const { store, cloneActions } = require('../store');
@@ -19,7 +20,7 @@ exports.gradeRepo = async (req, res) => {
     const projectName = parseRepoUrl(repoUrl);
     
     const projectPath = path.join(__dirname, '..', 'projects', projectName);
-    await cloneRepository(repoUrl, projectPath);
+    await safeCloneRepo(repoUrl, projectPath);
 
     //   could use a zip folder if needed if github doesn't work. (below is the code needed)
     // await downloadRepositoryZip(repoUrl, projectPath);
