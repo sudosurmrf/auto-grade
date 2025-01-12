@@ -59,6 +59,13 @@ const cloneSlice = createSlice({
         type: 'nestedFolderReset',
       });
     },
+    folderDelete(state, action){
+      state.logs.push({
+        type: 'folderDelete',
+        folderPath: action.payload.folderPath,
+        timestamp: new Date().toISOString(),
+      });
+    },
   },
 });
 

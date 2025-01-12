@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGradeRepoMutation, useLazyGetFileStructureQuery } from './services/graderApi';
 import ProjectCard from './fileViewer/ProjectCard';
 import MultiFileUploader from './components/MultipleFileUploader';
+import { useDeleteProjectsMutation } from './services/graderApi';
 
 const App = () => {
   const [nestedFolder, setNestedFolder] = useState('');
@@ -16,10 +17,9 @@ const App = () => {
       manualGrade: null,
     }))
   );
-
+  const [deleteProjects] = useDeleteProjectsMutation();
 
   const [gradeRepo] = useGradeRepoMutation(); 
-  // const [fetchFileStructure] = useLazyGetFileStructureQuery();
 
   //logic to handle the repoUrl or the moduleNumber change
   const handleRepoUrlChange = (index, newUrl) => {
@@ -128,11 +128,20 @@ const App = () => {
   };
 
 
+  const clearProjectData = async() => {
+    try {
+      await deleteProjects();
+      alert('All project data has been deleted');
+    } catch(err){
+      console.log('couldnt delete the projects', err);
+    }
+  }
+
   return (
     <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '20px' }}>
       <h1>TA Too EZ</h1>
       <p>Enter up to 50 GitHub links - let me know if there are features you want added</p>
-
+    <button onClick={() => clearProjectData()}>Clear All Project Data</button>
       <MultiFileUploader onLinksExtracted={handleLinkExtract} />
 
       <div
