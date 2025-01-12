@@ -1,0 +1,123 @@
+.file-structure-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.281);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.file-structure-modal {
+  width: 70%;
+  height: 80%;
+  background-color: #1a1d1ffb;
+  border: 2px solid #00fce2;
+  box-shadow: 0 0 10px rgba(0, 252, 226, 0.6);
+  border-radius: 8px;
+  position: relative; 
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.close-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: #101214;
+  border: 1px solid #00fce2;
+  color: #00fce2;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #14181a;
+  box-shadow: 0 0 8px rgba(0, 252, 226, 0.8);
+}
+
+.file-tree-pane {
+  width: 250px;
+  min-width: 250px;
+  overflow-y: auto;
+  border-right: 1px solid #00fce2;
+  padding: 10px;
+}
+
+.file-content-pane {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.folder-item {
+  cursor: pointer;
+  font-weight: bold;
+  margin: 5px 0;
+  color: #00fce2;
+}
+
+.file-item {
+  margin-left: 20px;
+  cursor: pointer;
+  color: #ccc;
+  margin: 5px 0;
+}
+
+.file-item:hover,
+.folder-item:hover {
+  color: #fff;
+}
+
+/* .project-card {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  overflow: hidden; 
+}
+.charge-overlay {
+  position: absolute;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background: rgba(0, 255, 0, 0.2);
+  z-index: 1; 
+  pointer-events: none;
+
+
+  animation: chargeAnimation 2s infinite alternate ease-in-out;
+}
+
+@keyframes chargeAnimation {
+  0% {
+    transform: translateY(100%);
+    opacity: 0.1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+}
+
+.fail-blink {
+  background: rgba(255, 0, 0, 0.3) !important;
+  animation: failBlink 0.5s 2 alternate ease-in-out;
+
+}
+
+@keyframes failBlink {
+  0%, 100% {
+    opacity: 1.0;
+  }
+  50% {
+    opacity: 0.1;
+  }
+} */

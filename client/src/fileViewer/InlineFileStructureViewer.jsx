@@ -10,7 +10,7 @@ function detectLanguage(filePath) {
   return 'text';
 }
 
-export default function FileStructureViewer({
+export default function InlineFileStructureViewer({
   fileTree,
   onClose,
   nestedFolder,
@@ -55,7 +55,7 @@ export default function FileStructureViewer({
             {isExpanded && renderTree(item.children, currentPath)}
           </div>
         );
-      } else if (item.type === 'file') {
+      } else {
         return (
           <div
             key={currentPath}
@@ -66,63 +66,70 @@ export default function FileStructureViewer({
           </div>
         );
       }
-      return null;
     });
   };
 
-  // If no file tree
   if (!fileTree) {
     return <p>No file tree available</p>;
   }
 
   return (
-    <div style={{ border: '1px solid #ccc', display: 'flex', height: '600px', marginTop: '10px' }}>
-      {/* Left side: file structure */}
-      <div style={{ width: '250px', overflowY: 'auto', borderRight: '1px solid #ccc', padding: '8px' }}>
-        <button onClick={onClose} style={{ marginBottom: '10px' }}>
-          Hide File Structure
-        </button>
-        <h4>File Tree</h4>
-        {fileTree.files && fileTree.files.length > 0 ? (
-          renderTree(fileTree.files)
-        ) : (
-          <p>No files</p>
-        )}
-      </div>
+    <div style={{ border: '1px solid #ccc', marginTop: '10px' }}>
+      <div style={{ display: 'flex', height: '400px' }}>
+        {/* Left side: file tree */}
+        <div
+          style={{
+            width: '250px',
+            overflowY: 'auto',
+            borderRight: '1px solid #ccc',
+            padding: '8px',
+          }}
+        >
+          <button onClick={onClose} style={{ marginBottom: '10px' }}>
+            Hide File Structure
+          </button>
+          <h4>File Tree</h4>
+          {fileTree.files && fileTree.files.length > 0 ? (
+            renderTree(fileTree.files)
+          ) : (
+            <p>No files</p>
+          )}
+        </div>
 
-      {/* Right side: open files */}
-      <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', padding: '8px', overflow: 'auto' }}>
-        {openFiles.length === 0 && (
-          <div style={{ margin: 'auto', color: '#777' }}>
-            <p>No files open.</p>
-          </div>
-        )}
-        {openFiles.map((file) => (
-          <div
-            key={file.path}
-            style={{
-              flex: '1 1 45%',
-              margin: '8px',
-              border: '1px solid #ddd',
-              display: 'flex',
-              flexDirection: 'column',
-              minWidth: '300px',
-              maxWidth: '100%',
-            }}
-          >
-            <div style={{ background: '#f5f5f5', padding: '5px' }}>
-              <strong>{file.path}</strong>
-              <button style={{ float: 'right' }} onClick={() => closeFile(file.path)}>
-                Close
-              </button>
+        {/* Right side: open files */}
+        <div style={{ flex: 1, display: 'flex', flexWrap: 'wrap', padding: '8px', overflow: 'auto' }}>
+          {openFiles.length === 0 && (
+            <div style={{ margin: 'auto', color: '#777' }}>
+              <p>No files open.</p>
             </div>
-            <div style={{ flex: 1, overflow: 'auto', minHeight: '200px' }}>
-              <SyntaxHighlighter language={detectLanguage(file.path)} style={atomDark}>
-                {file.content}
-              </SyntaxHighlighter>
+          )}
+          {openFiles.map((file) => (
+            <div
+              key={file.path}
+              style={{
+                flex: '1 1 45%',
+                margin: '8px',
+                border: '1px solid #ddd',
+                display: 'flex',
+                flexDirection: 'column',
+                minWidth: '300px',
+                maxWidth: '100%',
+              }}
+            >
+              <div style={{ background: '#f5f5f5', padding: '5px' }}>
+                <strong>{file.path}</strong>
+                <button style={{ float: 'right' }} onClick={() => closeFile(file.path)}>
+                  Close
+                </button>
+              </div>
+              <div style={{ flex: 1, overflow: 'auto', minHeight: '200px' }}>
+                <SyntaxHighlighter language={detectLanguage(file.path)} style={atomDark}>
+                  {file.content}
+                </SyntaxHighlighter>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

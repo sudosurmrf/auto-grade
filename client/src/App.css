@@ -1,0 +1,235 @@
+/* App.css */
+
+/* Futuristic "Tron" theme colors */
+:root {
+  --bg-color: #0d0f10;       /* Dark background */
+  --card-bg: #191c1f;       /* Slightly lighter card background */
+  --accent-color: #00fce2;   /* Neon aqua */
+  --accent-color-2: #ff00fb; /* Neon magenta (optional) */
+  --text-color: #e8e8e8;
+  --border-color: #00fce2;
+  --box-shadow-neon: 0 0 8px rgba(0, 252, 226, 0.8);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Orbitron', 'Roboto', sans-serif; /* Orbitron or a futuristic font */
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  max-width: 1800px;
+  flex-direction: column;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+
+.app-title {
+  display: flex;
+  font-size: 2.4rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(0, 252, 226, 0.8);
+}
+
+.app-subtitle {
+  font-size: 1.1rem;
+  color: #cccccc;
+  margin-bottom: 20px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 8px 4px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #fff;
+  background: linear-gradient(145deg, #48117a, #046b5a4b);
+  border: 1px solid #666;
+  border-radius: 5px;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
+              -2px -2px 6px rgba(255, 255, 255, 0.03);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.4),
+              -2px -2px 6px rgba(255, 255, 255, 0.03);
+  background: linear-gradient(145deg, #f11a7e, #22f107);
+}
+
+
+.btn:active {
+  transform: translateY(1px);
+  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(145deg, #333, #333);
+}
+
+.btn:focus {
+  outline: none;
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+.project-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 15px;
+  box-shadow: 0 0 6px rgba(0, 252, 226, 0.15);
+  transition: box-shadow 0.3s ease;
+}
+
+.project-card:hover {
+  box-shadow: 0 0 12px rgba(0, 252, 226, 0.25);
+}
+
+.project-card h1 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+  color: var(--accent-color);
+  text-shadow: 0 0 5px rgba(0, 252, 226, 0.6);
+}
+
+.project-card label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--accent-color);
+}
+
+.project-card select,
+.project-card input[type="text"] {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 10px;
+  background-color: #1e2124;
+  border: 1px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 4px;
+}
+
+.auto-grade-results {
+  margin-top: 10px;
+}
+
+.auto-grade-results h4 {
+  font-size: 1.1rem;
+  margin-bottom: 6px;
+  color: var(--accent-color);
+  text-shadow: 0 0 5px rgba(0, 252, 226, 0.7);
+}
+
+.auto-grade-results ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.pass {
+  color: #00fce2; 
+}
+.fail {
+  color: #ff2281; 
+}
+
+/* iFrame preview */
+.iframe-container {
+  margin-top: 10px;
+}
+
+.iframe-container h4 {
+  font-size: 1.1rem;
+  color: var(--accent-color);
+}
+
+.preview-iframe {
+  width: 100%;
+  height: 300px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background-color: #ffffff;
+}
+
+
+.add-project-btn {
+  margin-top: 16px;
+}
+
+
+ html, body {
+  height: 100%;
+  overflow-x: hidden;
+} 
+
+
+/* This is for a color loading screen im trying to make */
+
+/* .project-card {
+  position: relative;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.charge-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+
+.charging-green {
+  background: rgba(0, 255, 0, 0.2);
+  animation: chargeAnimation 2s infinite alternate ease-in-out;
+}
+
+.charging-red {
+  background: rgba(22, 179, 8, 0.336);
+  animation: none; 
+}
+
+
+@keyframes chargeAnimation {
+  0% {
+    transform: translateY(100%);
+    opacity: 0.1;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 0.3;
+  }
+}
+
+
+.fail-blink {
+  background: rgba(39, 240, 13, 0.384) !important;
+  animation: failBlink 0.5s 2 alternate ease-in-out;
+}
+
+@keyframes failBlink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.1;
+  }
+} */

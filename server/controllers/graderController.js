@@ -45,11 +45,6 @@ exports.gradeRepo = async (req, res) => {
       }
     }
 
-    // since vite outputs to 'dist' we need to connect the virtual path to it below
-    // const nestedPathName = nestedFolder
-    // ? path.join(projectName, nestedFolder)
-    // : projectName;
-
     let previewUrl = null;
     if (isViteProject) {
       const distPath = path.join(buildPath, 'dist');
@@ -86,6 +81,8 @@ exports.gradeRepo = async (req, res) => {
       success,
       checks: gradingResult,
       previewUrl,
+      // green: !!previewUrl,
+
     });
   } catch (error) {
     console.error(error);

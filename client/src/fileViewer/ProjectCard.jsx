@@ -1,43 +1,87 @@
 import React, { useState } from 'react';
 import { useAddNestedMutation, useLazyGetFileStructureQuery } from '../services/graderApi';
-import FileStructureViewer from './FileStructureViewer';
+import InlineFileStructureViewer from './InlineFileStructureViewer';
+import ModalFileStructureViewer from './ModalFileStructureViewer';
 
 export default function ProjectCard({ project, nestedFolder, setNestedFolder }) {
   const [fetchFileStructure] = useLazyGetFileStructureQuery();
   const [fileTree, setFileTree] = useState(null);
-  const [showFileTree, setShowFileTree] = useState(false);
+  const [showFileTreeInline, setShowFileTreeInline] = useState(false);
+  const [showFileTreeModal, setShowFileTreeModal] = useState(false);
+
   const [sendNested] = useAddNestedMutation();
 
+
   const handleShowFileStructure = async () => {
-    if (!project.repoUrl) return alert('Enter a GitHub URL first.');
+    if (!project.repoUrl) {
+      alert('Please enter a GitHub URL first.');
+      return;
+    }
     try {
-      const repoUrl = project.repoUrl;
-      const { data } = await fetchFileStructure(repoUrl, nestedFolder);
+      const { data } = await fetchFileStructure(project.repoUrl, nestedFolder);
       if (data) {
         setFileTree(data);
-        setShowFileTree(true);
+        setShowFileTreeInline(true);
       }
     } catch (err) {
       alert('Failed to fetch file structure.');
     }
   };
-  const handleNestedSend = async() => {
-   await sendNested(nestedFolder);
-   console.log(nestedFolder);
-  }
+
+  const handleShowModal = () => {
+    if (!fileTree) {
+      alert('No file tree yet—fetch it first!');
+      return;
+    }
+    setShowFileTreeModal(true);
+  };
 
   const handleHideFileStructure = () => {
-    setShowFileTree(false);
+    setShowFileTreeInline(false);
+  };
+
+  const handleHideModal = () => {
+    setShowFileTreeModal(false);
+  };
+
+  const handleNestedSend = async () => {
+    if (!nestedFolder) {
+      alert('No nested folder selected.');
+      return;
+    }
+    await sendNested(nestedFolder);
+    console.log('Nested folder sent:', nestedFolder);
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px' }}>
+    <div style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
       <p>Repo URL: {project.repoUrl}</p>
-      <button onClick={handleShowFileStructure}>Show File Structure</button>
-      <button onClick={handleNestedSend}>Set nested folder</button>
-      {showFileTree && fileTree && (
-        <FileStructureViewer fileTree={fileTree} onClose={handleHideFileStructure} nestedFolder={nestedFolder} setNestedFolder={setNestedFolder}/>
+      <button className="btn" onClick={handleShowFileStructure}>Show File Structure (Inline)</button>
+      <button className="btn" onClick={handleShowModal} style={{ marginLeft: '10px' }}>
+        Expand Full View (Modal)
+      </button>
+      <button className="btn" onClick={handleNestedSend} style={{ marginLeft: '10px' }}>
+        Set Nested Folder
+      </button>
+
+      {/* Inline file structure viewer */}
+      {showFileTreeInline && fileTree && (
+        <InlineFileStructureViewer
+          fileTree={fileTree}
+          onClose={handleHideFileStructure}
+          nestedFolder={nestedFolder}
+          setNestedFolder={setNestedFolder}
+        />
       )}
+
+      {/* Modal version (semi-transparent overlay) */}
+      <ModalFileStructureViewer
+        visible={showFileTreeModal}
+        onClose={handleHideModal}
+        fileTree={fileTree}
+        nestedFolder={nestedFolder}
+        setNestedFolder={setNestedFolder}
+      />
     </div>
   );
 }

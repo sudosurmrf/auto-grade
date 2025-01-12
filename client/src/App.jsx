@@ -3,6 +3,7 @@ import { useGradeRepoMutation, useLazyGetFileStructureQuery } from './services/g
 import ProjectCard from './fileViewer/ProjectCard';
 import MultiFileUploader from './components/MultipleFileUploader';
 import { useDeleteProjectsMutation } from './services/graderApi';
+import './App.css'
 
 const App = () => {
   const [nestedFolder, setNestedFolder] = useState('');
@@ -18,7 +19,7 @@ const App = () => {
     }))
   );
   const [deleteProjects] = useDeleteProjectsMutation();
-
+  const [allGradingComplete, setAllGradingComplete] = useState(false);
   const [gradeRepo] = useGradeRepoMutation(); 
 
   //logic to handle the repoUrl or the moduleNumber change
@@ -137,191 +138,257 @@ const App = () => {
     }
   }
 
-  const handleAutoGradeAll = async () => {
-    // makes copy for mutating in place
-    let newProjects = [...projects];
 
-    // sperates projs into success and fails - will adjust later
+
+  const handleAutoGradeAll = async () => {
+    setAllGradingComplete(false);
+  
+    let newProjects = [...projects];
     let successfulProjects = [];
     let failedProjects = [];
-
+  
     for (let i = 0; i < newProjects.length; i++) {
       const project = newProjects[i];
-
+  
+      project.status = 'charging';     
+      project.isCharging = true;      
+      project.failBlink = false;        
+      setProjects([...newProjects]);
+  
       if (!project.repoUrl) {
         console.warn('Skipping project with no repoUrl:', project);
-        failedProjects.push({
-          ...project,
-          autoGradeResult: {
-            success: false,
-            checks: [],
-            error: 'No repo URL provided',
-          },
-        });
+  
+        
+        project.status = 'fail';
+        project.isCharging = false;
+        project.failBlink = true;
+        project.autoGradeResult = {
+          success: false,
+          checks: [],
+          error: 'No repo URL provided',
+        };
+
+        setTimeout(() => {
+          project.failBlink = false;
+          setProjects([...newProjects]);
+        }, 1000);
+  
+        failedProjects.push({ ...project });
         continue;
       }
-
+  
       try {
         const { data } = await gradeRepo({
           repoUrl: project.repoUrl,
           nestedFolder,
           moduleNumber: project.moduleNumber,
         });
+  
         if (!data) {
           console.warn('No data returned for project:', project.repoUrl);
-          failedProjects.push({
-            ...project,
-            autoGradeResult: {
-              success: false,
-              checks: [],
-              error: 'No data returned',
-            },
-          });
-          continue;
-        }
-        if (data.success) {
-          successfulProjects.push({
-            ...project,
-            autoGradeResult: data,
-          });
-        } else {
-          failedProjects.push({
-            ...project,
-            autoGradeResult: data,
-          });
-        }
-      } catch (error) {
-        console.error('Error grading project:', project.repoUrl, error);
-        failedProjects.push({
-          ...project,
-          autoGradeResult: {
+  
+          project.status = 'fail';
+          project.isCharging = false;
+          project.failBlink = true;
+          project.autoGradeResult = {
             success: false,
             checks: [],
-            error: error.message || 'Unknown error',
-          },
-        });
+            error: 'No data returned',
+          };
+          setProjects([...newProjects]);
+  
+          setTimeout(() => {
+            project.failBlink = false;
+            setProjects([...newProjects]);
+          }, 1000);
+  
+          failedProjects.push({ ...project });
+          continue;
+        }
+    
+        if (data.green || data.builtAtRoot || data.success) {
+          data.success = true;
+          data.checks = data.checks || [];
+          data.checks.push({
+            pass: true,
+            message: 'Forced pass: built at root or success/previewUrl found',
+          });
+        }
+  
+        if (data.success) {
+          project.status = 'success';
+          project.isCharging = false;
+          project.autoGradeResult = data;
+          successfulProjects.push({ ...project });
+        } else {
+    
+          project.status = 'fail';
+          project.isCharging = false;
+          project.failBlink = true;
+          project.autoGradeResult = data;
+          setProjects([...newProjects]);
+  
+    
+          setTimeout(() => {
+            project.failBlink = false;
+            setProjects([...newProjects]);
+          }, 1000);
+  
+          failedProjects.push({ ...project });
+        }
+  
+        setProjects([...newProjects]);
+      } catch (error) {
+        console.error('Error grading project:', project.repoUrl, error);
+  
+
+        project.status = 'fail';
+        project.isCharging = false;
+        project.failBlink = true;
+        project.autoGradeResult = {
+          success: false,
+          checks: [],
+          error: error.message || 'Unknown error',
+        };
+        setProjects([...newProjects]);
+  
+        setTimeout(() => {
+          project.failBlink = false;
+          setProjects([...newProjects]);
+        }, 1000);
+  
+        failedProjects.push({ ...project });
       }
     }
+  
     newProjects = [...successfulProjects, ...failedProjects];
     setProjects(newProjects);
+  
+    setAllGradingComplete(true);
   };
-
-
   return (
-    <div style={{ maxWidth: '1800px', margin: '0 auto', padding: '20px' }}>
-      <h1>TA Too EZ</h1>
-      <p>Enter up to 50 GitHub links - let me know if there are features you want added</p>
-    <button onClick={() => clearProjectData()}>Clear All Project Data</button>
-    <button onClick={() => handleAutoGradeAll()}>Grade All / Render All</button>
+    <div className="app-container">
+      <h1 className="app-title">TA Too EZ</h1>
+      <p className="app-subtitle">
+        Enter up to 50 GitHub links. Let me know if there are features you want added.
+      </p>
+
+      <div>
+        <button onClick={clearProjectData} className="btn">
+          Clear All Project Data
+        </button>
+        <button onClick={handleAutoGradeAll} className="btn">
+          Grade All / Render All
+        </button>
+      </div>
+
       <MultiFileUploader onLinksExtracted={handleLinkExtract} />
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '16px',
-        }}
-      >
-        {projects.map((project, index) => {
-          const { autoGradeResult } = project;
-          const previewUrl = autoGradeResult?.previewUrl || null;
-          return (
-            <div
-              key={project.id}
-              style={{ border: '1px solid #ccc', padding: '10px' }}
-            >
-              <h1>{project.studentName}</h1>
-              <label style={{ display: 'block', marginBottom: '5px' }}>
-                Module:
-              </label>
+      <div className="projects-grid">
+      {projects.map((project, index) => {
+  const { autoGradeResult, status = '', failBlink = false, isCharging } = project;
+  const shouldShowGreen =
+    status === 'charging' ||
+    (status === 'success' && !allGradingComplete);
+
+  const shouldShowRed = status === 'fail';
+  const previewUrl = autoGradeResult?.previewUrl || null;
+
+  return (
+    <div className="project-card" key={project.id}>
+      {isCharging && (
+        <div 
+          className={`charge-overlay ${project.failBlink ? 'fail-blink' : ''}`}
+        />
+      )}
+
+      {(shouldShowGreen || shouldShowRed) && (
+        <div
+          className={`charge-overlay ${
+            shouldShowGreen ? 'charging-green' : 'charging-red'
+          } ${failBlink ? 'fail-blink' : ''}`}
+        />
+      )}
+
+      <h1>{project.studentName}</h1>
+
+              <label>Module:</label>
               <select
                 value={project.moduleNumber}
                 onChange={(e) => handleModuleChange(index, e.target.value)}
-                style={{ marginBottom: '10px' }}
               >
-                {/* will add more later on*/}
                 <option value="3">Module 3</option>
                 <option value="4">Module 4</option>
                 <option value="5">Module 5</option>
               </select>
 
-              <label style={{ display: 'block', marginBottom: '5px' }}>
-                GitHub URL:
-              </label>
+              <label>GitHub URL:</label>
               <input
                 type="text"
                 value={project.repoUrl}
                 onChange={(e) => handleRepoUrlChange(index, e.target.value)}
-                style={{ width: '100%', marginBottom: '10px' }}
               />
 
-              <button
-                onClick={() => handleAutoGrade(index)}
-                style={{ marginRight: '10px' }}
-              >
+              <button onClick={() => handleAutoGrade(index)} className="btn">
                 Auto Grade
               </button>
-
-              <button onClick={() => handleManualGrade(index)}>
+              <button onClick={() => handleManualGrade(index)} className="btn">
                 Manual Grade
               </button>
 
               {project.manualGrade !== null && (
                 <div style={{ marginTop: '10px' }}>
-                  <strong>Manual Grade:</strong> {project.manualGrade}
+                  <strong>Manual Grade: </strong> {project.manualGrade}
                 </div>
               )}
 
-              {/* left over code from my first iteration, just shows if auto pass / fail per module based on average grade */}
               {autoGradeResult && (
-                <div style={{ marginTop: '10px' }}>
+                <div className="auto-grade-results">
                   <h4>Auto-Grade Results</h4>
                   {autoGradeResult.success ? (
-                    <p style={{ color: 'green' }}>All checks passed!</p>
+                    <p className="pass">All checks passed!</p>
                   ) : (
-                    <p style={{ color: 'red' }}>Some checks failed.</p>
+                    <p className="fail">Some checks failed.</p>
                   )}
                   <ul>
                     {autoGradeResult.checks?.map((check, i) => (
-                      <li
-                        key={i}
-                        style={{ color: check.pass ? 'green' : 'red' }}
-                      >
+                      <li key={i} className={check.pass ? 'pass' : 'fail'}>
                         {check.message}
                       </li>
                     ))}
                   </ul>
                 </div>
               )}
-            
-              {/* this is for rendering each proj in an iframe */}
+
               {previewUrl && (
-                <div style={{ marginTop: '10px' }}>
+                <div className="iframe-container">
                   <h4>Preview</h4>
                   <iframe
                     title={`preview-${project.id}`}
                     src={previewUrl}
-                    style={{
-                      width: '100%',
-                      height: '300px',
-                      border: '1px solid #ccc',
-                    }}
+                    className="preview-iframe"
                   />
                 </div>
               )}
-              <ProjectCard project={project} nestedFolder={nestedFolder} setNestedFolder={setNestedFolder}/>
+
+              <ProjectCard
+                project={project}
+                nestedFolder={nestedFolder}
+                setNestedFolder={setNestedFolder}
+              />
             </div>
           );
         })}
       </div>
 
       {projects.length < 50 && (
-        <button onClick={handleAddProject} style={{ marginTop: '16px' }}>
+        <button onClick={handleAddProject} className="btn add-project-btn">
           Add Another Project
         </button>
       )}
     </div>
   );
-}
+};
+
 
 export default App;

@@ -9,9 +9,7 @@ router.post('/', async( req, res, next) => {
   try{
 
     const { nestedFolder } = req.body;
-    console.log(req.body);
     if(nestedFolder){
-      console.log(nestedFolder);
       store.dispatch(cloneActions.nestedFolderSet({ nestedFolder }));
   
       res.sendStatus(200);
