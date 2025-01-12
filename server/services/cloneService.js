@@ -27,7 +27,7 @@ const deleteFolderRecursive = (folderPath) => {
   }
 }
 //this tries to clone using simple-git
-exports.cloneRepository = (repoUrl, destination) => {
+const cloneRepository = (repoUrl, destination) => {
   return new Promise(async (resolve, reject) => {
     store.dispatch(cloneStarted({ repoUrl, destination }));
     try {
@@ -46,7 +46,7 @@ exports.cloneRepository = (repoUrl, destination) => {
 };
 
 //downloads the zip as a fallback
-exports.downloadRepositoryZip = async (repoUrl, destination) => {
+const downloadRepositoryZip = async (repoUrl, destination) => {
  //dispatch the download zip action
   store.dispatch(downloadStarted({ repoUrl, destination }));
 
@@ -96,4 +96,4 @@ exports.downloadRepositoryZip = async (repoUrl, destination) => {
   }
 };
 
-module.exports = {deleteFolderRecursive};
+module.exports = {deleteFolderRecursive, cloneRepository, downloadRepositoryZip};
