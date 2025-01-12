@@ -27,8 +27,13 @@ exports.gradeRepo = async (req, res) => {
     const concatNestedPath = nestedFolder 
     ? path.join(projectPath, nestedFolder)
     : projectPath;
+
+    const buildPath = await attemptBuildOneLevelDown(concatNestedPath);
     //this will check to make sure we are in a react project or not.
-    const packageJsonPath = path.join(concatNestedPath, 'package.json');
+
+    const relativeBuildDir = path.relative(projectPath, buildPath);
+
+    const packageJsonPath = path.join(buildPath, 'package.json');
     let isViteProject = false;
     if (fs.existsSync(packageJsonPath)) {
       const packageJson = require(packageJsonPath);
@@ -41,20 +46,17 @@ exports.gradeRepo = async (req, res) => {
     }
 
     // since vite outputs to 'dist' we need to connect the virtual path to it below
-    const nestedPathName = nestedFolder
-    ? path.join(projectName, nestedFolder)
-    : projectName;
+    // const nestedPathName = nestedFolder
+    // ? path.join(projectName, nestedFolder)
+    // : projectName;
 
     let previewUrl = null;
     if (isViteProject) {
-      const { execSync } = require('child_process');
-      execSync('npm install', { cwd: concatNestedPath, stdio: 'inherit' });
-      execSync('npm run build', { cwd: concatNestedPath, stdio: 'inherit' });
-
-      const distPath = path.join(concatNestedPath, 'dist');
+      const distPath = path.join(buildPath, 'dist');
       if (fs.existsSync(distPath)) {
         //and then serve it as an html file over express.
-        previewUrl = `http://localhost:5000/static/${nestedPathName}/dist/index.html`;
+        const staticDistPath = path.join(projectName, relativeBuildDir, 'dist', 'index.html');
+        previewUrl = `http://localhost:5000/static/${staticDistPath}`;
       }
       // had to add this line because the repo paths are not relative to this project, but instead relative to their own projects. 
       const indexFilePath = path.join(distPath, 'index.html');
@@ -67,13 +69,14 @@ exports.gradeRepo = async (req, res) => {
 
     } else {
       // else because if its not react, its either html, css, js or some variation of that. 
-      const indexPath = path.join(concatNestedPath, 'index.html');
+      const indexPath = path.join(buildPath, 'index.html');
       if (fs.existsSync(indexPath)) {
-        previewUrl = `http://localhost:5000/static/${nestedPathName}/index.html`;
+        const staticIndexPath = path.join(projectName, relativeBuildDir, 'index.html');
+        previewUrl = `http://localhost:5000/static/${staticIndexPath}`;
       }
     }
     // this is where the autograding part will go when I figure out how to make this lol.
-    const gradingResult = await autoGrade(concatNestedPath, moduleNumber || '3');
+    const gradingResult = await autoGrade(buildPath, moduleNumber || '3');
     // return the result of the grade + a link to preview. 
     const success = gradingResult.every((check) => check.pass);
 

@@ -76,7 +76,7 @@ async function attemptBuildOneLevelDown(basePath) {
   } catch (error) {
     console.error(`Build failed at root: ${basePath}, error:`, error);
   }
-  const skipDirs = new Set(['node_modules', '.git', 'dist', 'build', '.vscode']); 
+  const skipDirs = new Set(['node_modules', '.git', 'build', '.vscode']); 
 
   let subDirs;
   try {
