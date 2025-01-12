@@ -3,6 +3,7 @@ const cloneSlice = createSlice({
   name: 'clone',
   initialState: {
     logs: [],
+    nestedFolder: null,
   },
   reducers: {
     cloneStarted(state, action) {
@@ -43,6 +44,19 @@ const cloneSlice = createSlice({
       state.logs.push({
         type: 'downloadError',
         error: action.payload,
+      });
+    },
+    nestedFolderSet(state, action) {
+      state.nestedFolder = action.payload.nestedFolder;
+      state.logs.push({
+        type: 'nesteFolderSet',
+        nestedFolder: action.payload.nestedFolderSet,
+      });
+    },
+    nestedFolderReset(state) {
+      state.nestedFolder = '';
+      state.logs.push({
+        type: 'nestedFolderReset',
       });
     },
   },

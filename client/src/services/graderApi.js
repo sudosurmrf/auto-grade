@@ -6,22 +6,39 @@ const graderApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl }),
   endpoints: (builder) => ({
     gradeRepo: builder.mutation({
-      query: ({repoUrl, moduleNumber}) => ({
+      query: ({repoUrl, nestedFolder, moduleNumber}) => ({
         url: '/api/grade',
         method: 'POST',
-        body: { repoUrl, moduleNumber },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: { repoUrl, nestedFolder, moduleNumber },
       }),
     }),
     getFileStructure: builder.query({
-      query: (repoUrl) => ({
+      query: (repoUrl, nestedFolder) => ({
         url: '/api/file-structure',
         method: 'POST',
-        body: { repoUrl },
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: { repoUrl, nestedFolder },
+      }),
+      keepUnusedDataFor: 0,
+    }),
+    addNested: builder.mutation({
+      query: ({nestedFolder}) => ({
+        url: '/api/nested',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: { nestedFolder },
       }),
     }),
   }),
 });
 
-export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery } = graderApi;
+export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery, useAddNestedMutation } = graderApi;
 
 export default graderApi;

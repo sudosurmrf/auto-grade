@@ -3,7 +3,8 @@ import { useGradeRepoMutation, useLazyGetFileStructureQuery } from './services/g
 import ProjectCard from './fileViewer/ProjectCard';
 import MultiFileUploader from './components/MultipleFileUploader';
 
-function App() {
+const App = () => {
+  const [nestedFolder, setNestedFolder] = useState('');
   //allows up to 50 proj currently (memory intensive, so be careful)
   const [projects, setProjects] = useState(() =>
     Array.from({ length: 3 }, (_, i) => ({
@@ -15,6 +16,7 @@ function App() {
       manualGrade: null,
     }))
   );
+
 
   const [gradeRepo] = useGradeRepoMutation(); 
   // const [fetchFileStructure] = useLazyGetFileStructureQuery();
@@ -45,6 +47,7 @@ function App() {
     try {
       const { data } = await gradeRepo({
         repoUrl: project.repoUrl,
+        nestedFolder,
         moduleNumber: project.moduleNumber,
       });
       if (data) {
@@ -226,7 +229,7 @@ function App() {
                   />
                 </div>
               )}
-              <ProjectCard project={project}/>
+              <ProjectCard project={project} nestedFolder={nestedFolder} setNestedFolder={setNestedFolder}/>
             </div>
           );
         })}

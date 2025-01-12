@@ -4,6 +4,10 @@ const router = express.Router();
 const fs = require('fs');
 const path = require('path');
 const { parseRepoUrl } = require('../utils/parseRepoUrl');
+const { store, cloneActions } = require('../store');
+
+const app = express();
+app.use(express.json());
 
 // builds a tree based on recursive folders / files
 const getFileStructure = (dir) => {
@@ -42,16 +46,22 @@ const getFileStructure = (dir) => {
 }
 
 router.post('/', async (req, res) => {
-  const { repoUrl } = req.body;
+  const { repoUrl, nestedFolder } = req.body;
+  console.log(req.body);
+  if(nestedFolder){
+    store.dispatch.cloneActions?.nestedFolder({ nestedFolder });
+  }
   if (!repoUrl) {
     return res.status(400).json({ error: 'repoUrl is required' });
   }
-
   try {
     // folder name in projects is based on the github last 2 subdirectories
     const projectName = parseRepoUrl(repoUrl);
-    const projectPath = path.join(__dirname, '..', 'projects', projectName);
-
+    const projectPath = !!nestedFolder
+  ? path.join(__dirname, '..', 'projects', projectName, nestedFolder)
+  : path.join(__dirname, '..', 'projects', projectName);
+  // const projectPath = path.join(__dirname, '..', 'projects', projectName)
+    console.log(projectPath);
     if (!fs.existsSync(projectPath)) {
       return res.status(404).json({ error: 'Project folder not found. Please clone or build first.' });
     }

@@ -10,7 +10,7 @@ function detectLanguage(filePath) {
   return 'text';
 }
 
-export default function FileStructureViewer({ fileTree, onClose }) {
+export default function FileStructureViewer({ fileTree, onClose, nestedFolder, setNestedFolder }) {
   const [expandedPaths, setExpandedPaths] = useState({});
   const [openFiles, setOpenFiles] = useState([]);
 
@@ -39,7 +39,10 @@ export default function FileStructureViewer({ fileTree, onClose }) {
           <div key={currentPath} style={{ marginLeft: '15px' }}>
             <div
               style={{ cursor: 'pointer', fontWeight: 'bold' }}
-              onClick={() => toggleExpand(currentPath)}
+              onClick={() => {toggleExpand(currentPath); setNestedFolder({nestedFolder: currentPath});
+                  console.log('NESTED IN FS', currentPath);
+                  console.log(nestedFolder || 'first');
+              }}
             >
               {isExpanded ? '📂' : '📁'} {item.name}
             </div>
