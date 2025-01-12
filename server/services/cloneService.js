@@ -95,3 +95,5 @@ exports.downloadRepositoryZip = async (repoUrl, destination) => {
     throw err;
   }
 };
+
+module.exports = {deleteFolderRecursive};

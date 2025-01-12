@@ -36,9 +36,15 @@ const graderApi = createApi({
         body: { nestedFolder },
       }),
     }),
+    deleteProjects: builder.mutation({
+      query: () => ({
+        url: '/api/delete-projects',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery, useAddNestedMutation } = graderApi;
+export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery, useAddNestedMutation, useDeleteProjectsMutation } = graderApi;
 
 export default graderApi;
