@@ -17,20 +17,26 @@ router.post('/', async (req, res, next) => {
   try {
     // canvas login page
     await page.goto('https://fullstack.instructure.com/login/canvas', { waitUntil: 'networkidle2' });
-
-    await page.waitForSelector('.ic-Input'); 
-    const inputFields = await page.$$('.ic-Input'); // selects the ic-Input, theres 3 but we need 2
-    if (inputFields.length < 2) {
-      throw new Error('Login input fields not found');
+    //google OAUTH
+    if(process.env.GOOGLE_OAUTH){
+      await page.waitForSelector('.Button--primary');
+      await page.click('.Button--primary');
+      await page.keyboard.press('Enter');
+      await page.waitForNavigation({ waitUntil: 'networkidle2' });
+    } else {
+      //regular email / pw
+      await page.waitForSelector('.ic-Input'); 
+      const inputFields = await page.$$('.ic-Input'); // selects the ic-Input, theres 3 but we need 2
+      if (inputFields.length < 2) {
+        throw new Error('Login input fields not found');
+      }
+      await inputFields[0].type(process.env.FSA_EMAIL, { delay: 120 }); // types email
+      await inputFields[1].type(process.env.FSA_PW, { delay: 100 }); // types pw
+  
+      //hits login
+      await page.keyboard.press('Enter');
+      await page.waitForNavigation({ waitUntil: 'networkidle2' }); // waiting for the completion first
     }
-    await inputFields[0].type(process.env.FSA_EMAIL, { delay: 120 }); // types email
-
-    // Step 3: Enter password
-    await inputFields[1].type(process.env.FSA_PW, { delay: 100 }); // types pw
-
-    //hits login
-    await page.keyboard.press('Enter');
-    await page.waitForNavigation({ waitUntil: 'networkidle2' }); // waiting for the completion first
     await page.goto('https://fullstack.instructure.com/courses/1172/gradebook', { waitUntil: 'networkidle0' });
 
     // actions (e.g., filtering and updating grades)
