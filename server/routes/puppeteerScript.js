@@ -5,6 +5,11 @@ router.use(express.json());
 
 // inject-grades
 router.post('/', async (req, res, next) => {
+  const { studentId, studentName, moduleNumber, grade } = req.body;
+  console.log('Student Id: ', studentId);
+  console.log('Student Name: ', studentName);
+  console.log('Module: ', moduleNumber);
+  console.log('Grade: ', grade);
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
