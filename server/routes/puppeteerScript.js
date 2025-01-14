@@ -14,6 +14,24 @@ router.post('/', async (req, res, next) => {
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
+//wait for use command fn
+const waitForKeyPress = (key) => {
+  return new Promise((resolve) => {
+    readline.emitKeypressEvents(process.stdin);
+    process.stdin.setRawMode(true);
+
+    const handleKeyPress = (str, keyObj) => {
+      if (keyObj.sequence === key) {
+        process.stdin.setRawMode(false);
+        process.stdin.removeListener('keypress', handleKeyPress);
+        resolve();
+      }
+    };
+
+    process.stdin.on('keypress', handleKeyPress);
+  });
+};
+
   try {
     // canvas login page
     await page.goto('https://fullstack.instructure.com/login/canvas', { waitUntil: 'networkidle2' });
@@ -23,6 +41,7 @@ router.post('/', async (req, res, next) => {
       await page.click('.Button--primary');
       await page.keyboard.press('Enter');
       await page.waitForNavigation({ waitUntil: 'networkidle2' });
+      await waitForKeyPress(']');
     } else {
       //regular email / pw
       await page.waitForSelector('.ic-Input'); 
