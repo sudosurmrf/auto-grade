@@ -32,7 +32,7 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
 
   const handleGradeUpdate = async () => {
     try{
-      const update = await updateGrades({studentId: 14549, studentName: 'Test Student', moduleNume: '6', grade: 5});
+      const update = await updateGrades({studentId: 14549, studentName: 'Test Student', moduleNumber: '6', grade: 5});
 
       console.log('Did it work?', update);
     }catch(err){
