@@ -9,7 +9,7 @@ router.post('/', async (req, res, next) => {
   const page = await browser.newPage();
 
   try {
-    await page.goto('https://fullstack.instructure.com/courses/1059/gradebook', { waitUntil: 'networkidle0' });
+    await page.goto('https://fullstack.instructure.com/courses/1172/gradebook', { waitUntil: 'networkidle0' });
 
     // actions (e.g., filtering and updating grades)
     await page.type('#student-names-filter', 'Test Student', { delay: 100 });
