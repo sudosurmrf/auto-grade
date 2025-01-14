@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { useAddNestedMutation, useLazyGetFileStructureQuery } from '../services/graderApi';
+import { useAddNestedMutation, useLazyGetFileStructureQuery, useUpdateGradesMutation } from '../services/graderApi';
 import InlineFileStructureViewer from './InlineFileStructureViewer';
 import ModalFileStructureViewer from './ModalFileStructureViewer';
 
+
 export default function ProjectCard({ project, nestedFolder, setNestedFolder }) {
   const [fetchFileStructure] = useLazyGetFileStructureQuery();
+  const [updateGrades] = useUpdateGradesMutation();
   const [fileTree, setFileTree] = useState(null);
   const [showFileTreeInline, setShowFileTreeInline] = useState(false);
   const [showFileTreeModal, setShowFileTreeModal] = useState(false);
@@ -27,6 +29,16 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
       alert('Failed to fetch file structure.');
     }
   };
+
+  const handleGradeUpdate = async () => {
+    try{
+      const update = await updateGrades({studentId: 14549, studentName: 'Test Student', moduleNume: '6', grade: 5});
+
+      console.log('Did it work?', update);
+    }catch(err){
+      console.log('couldnt execute the bot commands', err);
+    }
+  }
 
   const handleShowModal = () => {
     if (!fileTree) {
@@ -63,6 +75,7 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
       <button className="btn" onClick={handleNestedSend} style={{ marginLeft: '10px' }}>
         Set Nested Folder
       </button>
+      <button onClick={() => handleGradeUpdate()}>UPDATE GRADES</button>
 
       {/* Inline file structure viewer */}
       {showFileTreeInline && fileTree && (

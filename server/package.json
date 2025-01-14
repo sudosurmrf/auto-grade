@@ -21,6 +21,7 @@
     "express": "^4.21.2",
     "jszip": "^3.10.1",
     "path": "^0.12.7",
+    "puppeteer": "^24.0.0",
     "react-redux": "^9.2.0",
     "simple-git": "^3.27.0",
     "uuidv4": "^6.2.13"

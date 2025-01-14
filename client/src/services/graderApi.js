@@ -36,6 +36,16 @@ const graderApi = createApi({
         body: { nestedFolder },
       }),
     }),
+    updateGrades: builder.mutation({
+      query: ({studentId, studentName, moduleNumber, grade}) => ({
+        url: '/api/inject-grades',
+        method: 'POST',
+        heades: {
+          'Content-Type': 'application/json',
+        },
+        body: { studentId, studentName, moduleNumber, grade },
+      }),
+    }),
     deleteProjects: builder.mutation({
       query: () => ({
         url: '/api/delete-projects',
@@ -45,6 +55,6 @@ const graderApi = createApi({
   }),
 });
 
-export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery, useAddNestedMutation, useDeleteProjectsMutation } = graderApi;
+export const { useGradeRepoMutation, useGetFileStructureQuery, useLazyGetFileStructureQuery, useAddNestedMutation, useDeleteProjectsMutation, useUpdateGradesMutation } = graderApi;
 
 export default graderApi;
