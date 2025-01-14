@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGradeRepoMutation, useLazyGetFileStructureQuery } from './services/graderApi';
 import ProjectCard from './fileViewer/ProjectCard';
 import MultiFileUploader from './components/MultipleFileUploader';
 import { useDeleteProjectsMutation } from './services/graderApi';
+import ProjectDetailsPanel from './components/ProjectDetailsPanel';
+import GradingCriteria from './grading-criteria/GradingCriteria';
 import './App.css'
 
 const App = () => {
@@ -14,13 +16,17 @@ const App = () => {
       moduleNumber: '3',
       repoUrl: '',
       autoGradeResult: null,
-      fileStructure: null, 
+      fileStructure: null,
       manualGrade: null,
+      gradingCriteria: [] 
     }))
   );
   const [deleteProjects] = useDeleteProjectsMutation();
   const [allGradingComplete, setAllGradingComplete] = useState(false);
   const [gradeRepo] = useGradeRepoMutation(); 
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [selectedGrade, setSelectedGrade] = useState(null);
+  const [selectedNotes, setSelectedNotes] = useState('');
 
   //logic to handle the repoUrl or the moduleNumber change
   const handleRepoUrlChange = (index, newUrl) => {
@@ -36,6 +42,28 @@ const App = () => {
       )
     );
   };
+
+  const associateGradingCriteria = () => {
+    const updatedProjects = projects.map(project => {
+      const moduleNumber = project.moduleNumber;
+      //finds the grading criteria for the module
+      const criteriaForModule = GradingCriteria.find(criteria => criteria.module === `Module ${moduleNumber}`);
+      if (criteriaForModule) {
+        return {
+          ...project,
+          gradingCriteria: criteriaForModule.criteria
+        };
+      }
+      return project;
+    });
+
+    setProjects(updatedProjects);
+  };
+
+  useEffect(() => {
+    associateGradingCriteria();
+  }, []);
+
 
   // auto grade doesn't currently work. I'll fix it and add more logic to it at a later point. I realized after I started that the autograde is a bit more complex and I need to research a beter way to handle it.
   const handleAutoGrade = async (index) => {
@@ -97,27 +125,27 @@ const App = () => {
     ]);
   };
 
-  const handleLinkExtract = async (links, studentNames) => {
-
+  const handleLinkExtract = async (links, studentIds) => {
     const updated = [...projects];
+  
     for (let i = 0; i < links.length; i++) {
       const link = links[i];
-      const studentName = studentNames[i] || 'error find student';
-    
-      // Find the first empty slot:
-      handleAddProject();
+      const studentName = Object.keys(studentIds)[i] || 'error find student';
+      const studentId = studentIds[studentName];
+  
       const emptyIdx = updated.findIndex((p) => !p.repoUrl);
+  
       if (emptyIdx >= 0) {
         updated[emptyIdx].repoUrl = link;
-        updated[emptyIdx].studentName = studentName
-      //  await handleAutoGrade(emptyIdx);
+        updated[emptyIdx].studentName = studentName;
+        updated[emptyIdx].studentId = studentId; 
       } else {
-        // creates a new proj
         if (updated.length < 50) {
           updated.push({
             id: String(updated.length),
             repoUrl: link,
             studentName,
+            studentId, 
           });
         } else {
           alert('Max 50 projects reached. Some links are ignored.');
@@ -125,9 +153,10 @@ const App = () => {
         }
       }
     }
+  
     setProjects(updated);
   };
-
+  
 
   const clearProjectData = async() => {
     try {
@@ -207,7 +236,7 @@ const App = () => {
         }
     
         if (data.green || data.builtAtRoot || data.success) {
-          data.success = true;
+          // data.success = true;
           data.checks = data.checks || [];
           data.checks.push({
             pass: true,
@@ -266,6 +295,25 @@ const App = () => {
   
     setAllGradingComplete(true);
   };
+  const handleProjectCardClick = (project) => {
+    setSelectedProject(project);
+    setSelectedGrade(project.manualGrade || (project.autoGradeResult?.grade || null));
+    setSelectedNotes(project.notes || '');
+  };
+
+  const handleSaveNotes = () => {
+    const updatedProjects = projects.map((proj) =>
+      proj.id === selectedProject.id
+        ? {
+            ...proj,
+            manualGrade: selectedGrade,
+            notes: selectedNotes,
+          }
+        : proj
+    );
+    setProjects(updatedProjects);
+  };
+
   return (
     <div className="app-container">
       <h1 className="app-title">TA Too EZ</h1>
@@ -285,99 +333,106 @@ const App = () => {
       <MultiFileUploader onLinksExtracted={handleLinkExtract} />
 
       <div className="projects-grid">
-      {projects.map((project, index) => {
-  const { autoGradeResult, status = '', failBlink = false, isCharging } = project;
-  const shouldShowGreen =
-    status === 'charging' ||
-    (status === 'success' && !allGradingComplete);
+        {projects.map((project, index) => {
+          const {
+            autoGradeResult,
+            status = '',
+            failBlink = false,
+            isCharging,
+          } = project;
+          const shouldShowGreen =
+            status === 'charging' ||
+            (status === 'success' && !allGradingComplete);
 
-  const shouldShowRed = status === 'fail';
-  const previewUrl = autoGradeResult?.previewUrl || null;
+          const shouldShowRed = status === 'fail';
+          const previewUrl = autoGradeResult?.previewUrl || null;
 
-  return (
-    <div className="project-card" key={project.id}>
-      {isCharging && (
-        <div 
-          className={`charge-overlay ${project.failBlink ? 'fail-blink' : ''}`}
-        />
-      )}
-
-      {(shouldShowGreen || shouldShowRed) && (
-        <div
-          className={`charge-overlay ${
-            shouldShowGreen ? 'charging-green' : 'charging-red'
-          } ${failBlink ? 'fail-blink' : ''}`}
-        />
-      )}
-
-      <h1>{project.studentName}</h1>
-
-              <label>Module:</label>
-              <select
-                value={project.moduleNumber}
-                onChange={(e) => handleModuleChange(index, e.target.value)}
-              >
-                <option value="3">Module 3</option>
-                <option value="4">Module 4</option>
-                <option value="5">Module 5</option>
-              </select>
-
-              <label>GitHub URL:</label>
-              <input
-                type="text"
-                value={project.repoUrl}
-                onChange={(e) => handleRepoUrlChange(index, e.target.value)}
+          return (
+            <div
+            className="project-card"
+            key={project.id}
+            onClick={() => handleProjectCardClick(project)}
+          >
+            {isCharging && (
+              <div className={`charge-overlay ${project.failBlink ? 'fail-blink' : ''}`} />
+            )}
+        
+            {(shouldShowGreen || shouldShowRed) && (
+              <div
+                className={`charge-overlay ${
+                  shouldShowGreen ? 'charging-green' : 'charging-red'
+                } ${failBlink ? 'fail-blink' : ''}`}
               />
-
-              <button onClick={() => handleAutoGrade(index)} className="btn">
-                Auto Grade
-              </button>
-              <button onClick={() => handleManualGrade(index)} className="btn">
-                Manual Grade
-              </button>
-
-              {project.manualGrade !== null && (
-                <div style={{ marginTop: '10px' }}>
-                  <strong>Manual Grade: </strong> {project.manualGrade}
-                </div>
-              )}
-
-              {autoGradeResult && (
-                <div className="auto-grade-results">
-                  <h4>Auto-Grade Results</h4>
-                  {autoGradeResult.success ? (
-                    <p className="pass">All checks passed!</p>
-                  ) : (
-                    <p className="fail">Some checks failed.</p>
-                  )}
-                  <ul>
-                    {autoGradeResult.checks?.map((check, i) => (
-                      <li key={i} className={check.pass ? 'pass' : 'fail'}>
-                        {check.message}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {previewUrl && (
-                <div className="iframe-container">
-                  <h4>Preview</h4>
-                  <iframe
-                    title={`preview-${project.id}`}
-                    src={previewUrl}
-                    className="preview-iframe"
-                  />
-                </div>
-              )}
-
-              <ProjectCard
-                project={project}
-                nestedFolder={nestedFolder}
-                setNestedFolder={setNestedFolder}
-              />
-            </div>
-          );
+            )}
+        
+            <h1>{project.studentName}</h1>
+            <h3>{project.studentId}</h3>
+        
+            <label>Module:</label>
+            <select
+              value={project.moduleNumber}
+              onChange={(e) => handleModuleChange(index, e.target.value)}
+            >
+              {GradingCriteria.map(criteria => (
+                <option key={criteria.module} value={criteria.module.replace('Module ', '')}>
+                  {criteria.module}
+                </option>
+              ))}
+            </select>
+        
+            <label>GitHub URL:</label>
+            <input
+              type="text"
+              value={project.repoUrl}
+              onChange={(e) => handleRepoUrlChange(index, e.target.value)}
+            />
+        
+            <button onClick={() => handleAutoGrade(index)} className="btn">
+              Render
+            </button>
+            {/* <button onClick={() => handleManualGrade(index)} className="btn">
+              Manual Grade
+            </button> */}
+      
+            {/* {project.manualGrade !== null && (
+              <div style={{ marginTop: '10px' }}>
+                <strong>Manual Grade: </strong> {project.manualGrade}
+              </div>
+            )} */}
+            {autoGradeResult && (
+              <div className="auto-grade-results">
+                <h4>Auto-Grade Results</h4>
+                {autoGradeResult.success ? (
+                  <p className="pass">All checks passed!</p>
+                ) : (
+                  <p className="fail">Some checks failed.</p>
+                )}
+                <ul>
+                  {autoGradeResult.checks?.map((check, i) => (
+                    <li key={i} className={check.pass ? 'pass' : 'fail'}>
+                      {check.message}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {previewUrl && (
+              <div className="iframe-container">
+                <h4>Preview</h4>
+                <iframe
+                  title={`preview-${project.id}`}
+                  src={previewUrl}
+                  className="preview-iframe"
+                />
+              </div>
+            )}
+            <ProjectCard
+              project={project}
+              nestedFolder={nestedFolder}
+              setNestedFolder={setNestedFolder}
+            />
+          </div>
+        );
         })}
       </div>
 
@@ -385,6 +440,18 @@ const App = () => {
         <button onClick={handleAddProject} className="btn add-project-btn">
           Add Another Project
         </button>
+      )}
+
+      {/* Right panel for detailed project view */}
+      {selectedProject && (
+        <ProjectDetailsPanel
+          id="project-side-panel"
+          gradingCriteria={GradingCriteria}
+          selectedProject={selectedProject}
+          setSelectedGrade={setSelectedGrade}
+          setSelectedNotes={setSelectedNotes}
+          handleSaveNotes={handleSaveNotes}
+        />
       )}
     </div>
   );
