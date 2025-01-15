@@ -37,7 +37,7 @@ const waitForKeyPress = (key) => {
     // canvas login page
     await page.goto('https://fullstack.instructure.com/login/canvas', { waitUntil: 'networkidle2' });
     //google OAUTH
-    if(process.env.GOOGLE_OAUTH){
+    if(process.env.GOOGLE_OAUTH === true){
       await page.waitForSelector('.Button--primary');
       await page.click('.Button--primary');
       await page.keyboard.press('Enter');
@@ -57,12 +57,13 @@ const waitForKeyPress = (key) => {
       await page.keyboard.press('Enter');
       await page.waitForNavigation({ waitUntil: 'networkidle2' }); // waiting for the completion first
     }
-    await page.goto('https://fullstack.instructure.com/courses/1172/gradebook', { waitUntil: 'networkidle0' });
+    await page.goto('https://fullstack.instructure.com/courses/1059/gradebook', { waitUntil: 'networkidle0' });
 
     // actions (e.g., filtering and updating grades)
     await page.type('#student-names-filter', 'Test Student', { delay: 100 });
     await page.type('#assignments-filter', 'Block 6', { delay: 100 });
-    await page.click('#assignments-filter option[value*="Grocery List"]');
+    // await page.click('#assignments-filter option[value*="Grocery List"]'); //maybe go back later and find a better selector.
+    await page.keyboard.press('Enter');
     await page.click('.Grid__GradeCell__Content');
     await page.type('.active.editable', '5');
     await page.keyboard.press('Enter');
