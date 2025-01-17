@@ -1,6 +1,6 @@
 ### Directions 
 
-Make sure to create your own .env file first. The .env must have a PORT, FSA_EMAIL, FSA_PW, GOOGLE_OAUTH=false (change to true if your fsa email signs in with OAUTH from google)
+Make sure to create your own .env file first. The .env must have a PORT=5000, FSA_EMAIL, FSA_PW, GOOGLE_OAUTH=false (change to true if your fsa email signs in with OAUTH from google)
 
 open 2 terminals, cd into server and run: node server.js
 
