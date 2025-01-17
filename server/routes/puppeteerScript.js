@@ -38,7 +38,7 @@ const waitForKeyPress = (key) => {
     // canvas login page
     await page.goto('https://fullstack.instructure.com/login/canvas', { waitUntil: 'networkidle2' });
     //google OAUTH
-    if(process.env.GOOGLE_OAUTH === true){
+    if(process.env.GOOGLE_OAUTH === 'true'){
       await page.waitForSelector('.Button--primary');
       await page.click('.Button--primary');
       await page.keyboard.press('Enter');
