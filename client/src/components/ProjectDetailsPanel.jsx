@@ -6,6 +6,8 @@ const ProjectDetailsPanel = ({
   setSelectedNotes,
   handleSaveNotes,
   gradingCriteria,
+  projects,
+  setProjects,
 }) => {
   const [localGrade, setLocalGrade] = useState(
     selectedProject.manualGrade || selectedProject.autoGradeResult?.grade || ''
@@ -103,7 +105,20 @@ const ProjectDetailsPanel = ({
   const calculateGradeDisplay = () => {
     return `${totalAssignedPoints}/${maxPointsForModule}`;
   };
-
+  useEffect(() => {
+    if (selectedProject) {
+      setProjects((prevProjects) =>
+        prevProjects.map((proj) =>
+          proj.id === selectedProject.id
+            ? {
+                ...proj,
+                grade: totalAssignedPoints,
+              }
+            : proj
+        )
+      );
+    }
+  }, [selectedProject, totalAssignedPoints, setProjects]);
   return (
     <div id="project-side-panel">
       <h2>Project Details</h2>

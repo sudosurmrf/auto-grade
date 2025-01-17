@@ -7,11 +7,12 @@ const readline = require('readline');
 
 // inject-grades
 router.post('/', async (req, res, next) => {
-  const { studentId, studentName, moduleNumber, grade } = req.body;
+  const { studentId, studentName, moduleNumber, grade, classId } = req.body;
   console.log('Student Id: ', studentId);
   console.log('Student Name: ', studentName);
   console.log('Module: ', moduleNumber);
   console.log('Grade: ', grade);
+  console.log('Class Id: ', classId);
   const browser = await puppeteer.launch({ headless: false });
   const page = await browser.newPage();
 
@@ -57,15 +58,15 @@ const waitForKeyPress = (key) => {
       await page.keyboard.press('Enter');
       await page.waitForNavigation({ waitUntil: 'networkidle2' }); // waiting for the completion first
     }
-    await page.goto('https://fullstack.instructure.com/courses/1059/gradebook', { waitUntil: 'networkidle0' });
+    await page.goto(`https://fullstack.instructure.com/courses/${classId}/gradebook`, { waitUntil: 'networkidle0' });
 
     // actions (e.g., filtering and updating grades)
-    await page.type('#student-names-filter', 'Test Student', { delay: 100 });
-    await page.type('#assignments-filter', 'Block 6', { delay: 100 });
+    await page.type('#student-names-filter', `${studentName}`, { delay: 100 });
+    await page.type('#assignments-filter', `${moduleNumber}`, { delay: 100 });
     // await page.click('#assignments-filter option[value*="Grocery List"]'); //maybe go back later and find a better selector.
     await page.keyboard.press('Enter');
     await page.click('.Grid__GradeCell__Content');
-    await page.type('.active.editable', '5');
+    await page.type('.active.editable', `${grade}`);
     await page.keyboard.press('Enter');
 
     res.send('Grade updated successfully!');

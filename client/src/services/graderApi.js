@@ -37,13 +37,13 @@ const graderApi = createApi({
       }),
     }),
     updateGrades: builder.mutation({
-      query: ({studentId, studentName, moduleNumber, grade}) => ({
+      query: ({studentId, studentName, moduleNumber, grade, classId}) => ({
         url: '/api/inject-grades',
         method: 'POST',
         heades: {
           'Content-Type': 'application/json',
         },
-        body: { studentId, studentName, moduleNumber, grade },
+        body: { studentId, studentName, moduleNumber, grade, classId },
       }),
     }),
     deleteProjects: builder.mutation({

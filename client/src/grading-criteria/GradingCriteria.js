@@ -1,6 +1,6 @@
 const GradingCriteria = [
   {
-    module: '4 - Github Workflow',
+    module: 'Block 4 Workshop: GitHub',
     criteria: [
       {
         id: 1,
@@ -27,7 +27,7 @@ const GradingCriteria = [
     ],
   },
     {
-      module: '5 - The Zoo Problem',
+      module: 'Block 5 Workshop: The Zoo',
       criteria: [
         {
           id: 1,
@@ -74,7 +74,7 @@ const GradingCriteria = [
       ],
   },
   {
-    module: '6 - Grocery List',
+    module: 'Block 6 Workshop: Grocery',
     criteria: [
       {
         id: 1,
@@ -139,7 +139,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '7 - Secure the Vault',
+    module: 'Block 7 Workshop: Secure the Vault',
     criteria: [
       {
         id: 1,
@@ -188,7 +188,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: "7A - Steven's Book House",
+    module: "Block 7A Workshop: Steven's Book House",
     criteria: [
       {
         id: 1,
@@ -247,7 +247,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '8 - Development Team Practice',
+    module: 'Block 8 Workshop: Development Team Practice',
     criteria: [
       {
         id: 1,
@@ -264,7 +264,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '9 - Career Sim',
+    module: 'Block 9: Unit 1 Career Simulation',
     criteria: [
       {
         id: 1,
@@ -329,7 +329,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '10 - Picasso Painting',
+    module: 'Block 10 Workshop: The Picasso Painting',
     criteria: [
       {
         id: 1,
@@ -381,7 +381,7 @@ const GradingCriteria = [
       },
     ],
   },{
-    module: '12 - Career Simulation 2',
+    module: 'Block 12: Unit 1 Career Simulation',
     criteria: [
       {
         id: 1,
@@ -428,7 +428,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '13 - Temperature Converter',
+    module: 'Block 13 Workshop: Temperature Converter',
     criteria: [
       {
         id: 1,
@@ -463,7 +463,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '14 - Stats',
+    module: 'Block 14 Workshop: Stats',
     criteria: [
       {
         id: 1,
@@ -510,7 +510,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '15 - Froyo Orders',
+    module: 'Block 15 Workshop: Froyo Orders',
     criteria: [
       {
         id: 1,
@@ -575,7 +575,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '16 - Grocery List',
+    module: 'Block 16 Workshop: Grocery List',
     criteria: [
       {
         id: 1,
@@ -616,7 +616,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '17 - Numbers',
+    module: 'Block 17 Workshop: Numbers',
     criteria: [
       {
         id: 1,
@@ -669,7 +669,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '18 - Writing Tests Specifications',
+    module: 'Block 18 Workshop: Writing Tests Specifications',
     criteria: [
       {
         id: 1,
@@ -710,7 +710,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '19 - Freelancer Forum',
+    module: 'Block 19 Workshop: Freelancer Forum',
     criteria: [
       {
         id: 1,
@@ -781,7 +781,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '20 - Odds and Events',
+    module: 'Block 20 Workshop: Odds and Events',
     criteria: [
       {
         id: 1,
@@ -846,7 +846,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '20A - The Prescription',
+    module: 'Block 20A Workshop: The Prescription',
     criteria: [
       {
         id: 1,
@@ -875,7 +875,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '21 - Party Planner',
+    module: 'Block 21 Workshop: Party Planner',
     criteria: [
       {
         id: 1,
@@ -928,7 +928,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '23A - Unit 2 Career Simulation: Puppy Bowl',
+    module: 'Block 23A: Unit 2 Career Simulation: Puppy Bowl',
     criteria: [
       {
         id: 1,
@@ -1011,7 +1011,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '24A - Autocorrect',
+    module: 'Block 24A Workshop: Autocorrect',
     criteria: [
       {
         id: 1,
@@ -1046,7 +1046,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '24 - Puppy Pals',
+    module: 'Block 24 Workshop: Puppy Pals',
     criteria: [
       {
         id: 1,
@@ -1074,7 +1074,7 @@ const GradingCriteria = [
       },
     ],
   },{
-    module: '25 - Color Picker',
+    module: 'Block 25 Workshop: Color Picker',
     criteria: [
       {
         id: 1,
@@ -1097,7 +1097,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '26 - Contact List',
+    module: 'Block 26 Workshop: Contact List',
     criteria: [
       {
         id: 1,
@@ -1126,7 +1126,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '27 - React Forms',
+    module: 'Block 27 Workshop: React Forms',
     criteria: [
       {
         id: 1,
@@ -1179,7 +1179,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '27A - The Sales Dashboard',
+    module: 'Block 27A Workshop: The Sales Dashboard',
     criteria: [
       {
         id: 1,
@@ -1208,7 +1208,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '27B - The Bank Account',
+    module: 'Block 27B Workshop: The Bank Account',
     criteria: [
       {
         id: 1,
@@ -1255,7 +1255,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '27C - Puppy Bowl Event',
+    module: 'Block 27C Workshop: Puppy Bowl Event',
     criteria: [
       {
         id: 1,
@@ -1277,7 +1277,7 @@ const GradingCriteria = [
       },
     ],
   },{
-    module: '27D - Testing Puppy Pals',
+    module: 'Block 27D Workshop: Testing Puppy Pals',
     criteria: [
       {
         id: 1,
@@ -1299,7 +1299,7 @@ const GradingCriteria = [
       },
     ],
   },{
-    module: '27E - Deploying Using Github Actions',
+    module: 'Block 27E Workshop: Deploying Using GitHub Actions',
     criteria: [
       {
         id: 1,
@@ -1328,7 +1328,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '28 - React Router',
+    module: 'Block 28 Workshop: React Router',
     criteria: [
       {
         id: 1,
@@ -1351,7 +1351,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '29 - Puppy Bowl React',
+    module: 'Block 29 Workshop: Puppy Bowl React',
     criteria: [
       {
         id: 1,
@@ -1380,7 +1380,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '30 - Career Simulation: BookBuddy UNI/ACC',
+    module: 'Block 30: Unit 3: Career Simulation: BookBuddy [Uni/ACC]',
     criteria: [
       {
         id: 1,
@@ -1493,7 +1493,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '30A - Career Simulation: BookBuddy CORE',
+    module: 'Block 30A: Unit 3: Career Simulation: BookBuddy [Core]',
     criteria: [
       {
         id: 1,
@@ -1660,7 +1660,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '31 - Acme Employees',
+    module: 'Block 31 Workshop: Acme Employees',
     criteria: [
       {
         id: 1,
@@ -1683,7 +1683,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '32 - The Acme Ice Cream Shop',
+    module: 'Block 32 Workshop: The Acme Ice Cream Shop',
     criteria: [
       {
         id: 1,
@@ -1718,7 +1718,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '33 - The Acme HR Directory',
+    module: 'Block 33 Workshop: The Acme HR Directory',
     criteria: [
       {
         id: 1,
@@ -1759,7 +1759,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '34 - The Acme Reservation Planner',
+    module: 'Block 34 Workshop: The Acme Reservation Planner',
     criteria: [
       {
         id: 1,
@@ -1842,7 +1842,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: '35 - The Acme Store',
+    module: 'Block 35 Workshop: The Acme Store',
     criteria: [
       {
         id: 1,
@@ -1931,7 +1931,7 @@ const GradingCriteria = [
     ],
   },
   {
-    module: "36 - The Acme Auth Store",
+    module: "Block 36 Workshop: The Acme Auth Store",
     criteria: [
       {
         id: 1,
@@ -1978,7 +1978,7 @@ const GradingCriteria = [
     ]
   },
   {
-    module: "36A - Classroom Manager: Part 1",
+    module: "Block 36A Workshop: Classroom Manager: Part 1",
     criteria: [
       {
         id: 1,
@@ -2013,7 +2013,7 @@ const GradingCriteria = [
     ]
   },
   {
-    module: "36B - Classroom Manager: Part 2",
+    module: "Block 36B Workshop: Classroom Manager: Part 2",
     criteria: [
       {
         id: 1,
@@ -2054,7 +2054,7 @@ const GradingCriteria = [
     ]
   },
   {
-    module: '36C - Classroom Manager: Part 3',
+    module: 'Block 36C Workshop: Classroom Manager: Part 3',
     criteria: [
       {
         id: 1,
@@ -2071,7 +2071,7 @@ const GradingCriteria = [
     ]
   },
   {
-    module: '37A - Unit 4 Career Simulation CORE',
+    module: 'Block 37A: Unit 4 Career Simulation (Core) ',
     criteria: [
       {
         id: 1,

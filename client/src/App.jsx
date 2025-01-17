@@ -18,9 +18,20 @@ const App = () => {
       autoGradeResult: null,
       fileStructure: null,
       manualGrade: null,
-      gradingCriteria: [] 
+      gradingCriteria: [],
+      studentId: 14549,
+      studentName: 'Test Student',
+      grade: '5',
+      classId: 1059,
     }))
   );
+  // const [studentData, setStudentData] = useState({
+  //     studentId:14549, 
+  //     studentName:'Test Student', 
+  //     moduleNumber:'3', 
+  //     grade:5, 
+  //     classId:1059
+  //   });
   const [deleteProjects] = useDeleteProjectsMutation();
   const [allGradingComplete, setAllGradingComplete] = useState(false);
   const [gradeRepo] = useGradeRepoMutation(); 
@@ -41,6 +52,9 @@ const App = () => {
         i === index ? { ...proj, moduleNumber: newModule } : proj
       )
     );
+    // setStudentData((prev) => ({
+    //   ...prev, moduleNumber: newModule,
+    // }));
   };
 
   const associateGradingCriteria = () => {
@@ -296,9 +310,13 @@ const App = () => {
     setAllGradingComplete(true);
   };
   const handleProjectCardClick = (project) => {
+    console.log(project);
     setSelectedProject(project);
     setSelectedGrade(project.manualGrade || (project.autoGradeResult?.grade || null));
     setSelectedNotes(project.notes || '');
+    // setStudentData((prev) => ({
+    //   ...prev, moduleNumber: project.moduleNumber, studentId: project.studentId, studentName: project.studentName
+    // }))
   };
 
   const handleSaveNotes = () => {
@@ -313,7 +331,7 @@ const App = () => {
     );
     setProjects(updatedProjects);
   };
-
+console.log(projects);
   return (
     <div className="app-container">
       <h1 className="app-title">TA Tool Kit</h1>
@@ -328,6 +346,41 @@ const App = () => {
         <button onClick={handleAutoGradeAll} className="btn">
           Grade All / Render All
         </button>
+        <input
+        className="btn"
+        type="number"
+        placeholder="Enter The Class ID Here"
+        value={projects[0]?.classId || ''}
+        onChange={(e) => {
+          const newClassId = e.target.value;
+          setProjects((prevProjects) =>
+            prevProjects.map((proj) => ({
+              ...proj,
+              classId: newClassId,
+            }))
+          );
+        }}
+      />
+        <button
+        className="btn"
+        onClick={() => {
+          if (!selectedProject) return;
+          setProjects((prevProjects) =>
+            prevProjects.map((proj) =>
+              proj.id === selectedProject.id
+                ? {
+                    ...proj,
+                    studentName: 'Test Student',
+                    studentId: 14549,
+                    classId: 1059,
+                  }
+                : proj
+            )
+          );
+        }}
+      >
+        Click To Set A Test Student
+      </button>
       </div>
 
       <MultiFileUploader onLinksExtracted={handleLinkExtract} />
@@ -430,6 +483,7 @@ const App = () => {
               project={project}
               nestedFolder={nestedFolder}
               setNestedFolder={setNestedFolder}
+          
             />
           </div>
         );
@@ -451,6 +505,8 @@ const App = () => {
           setSelectedGrade={setSelectedGrade}
           setSelectedNotes={setSelectedNotes}
           handleSaveNotes={handleSaveNotes}
+          projects={projects}
+          setProjects={setProjects}
         />
       )}
     </div>

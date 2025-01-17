@@ -10,6 +10,7 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
   const [fileTree, setFileTree] = useState(null);
   const [showFileTreeInline, setShowFileTreeInline] = useState(false);
   const [showFileTreeModal, setShowFileTreeModal] = useState(false);
+  
 
   const [sendNested] = useAddNestedMutation();
 
@@ -30,11 +31,11 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
     }
   };
 
-  const handleGradeUpdate = async () => {
+  const handleGradeUpdate = async (project) => {
+    console.log('PROJ', project);
     try{
-      const update = await updateGrades({studentId: 14549, studentName: 'Test Student', moduleNumber: '6', grade: 5});
+      await updateGrades(project);
 
-      console.log('Did it work?', update);
     }catch(err){
       console.log('couldnt execute the bot commands', err);
     }
@@ -75,7 +76,7 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
       <button className="btn" onClick={handleNestedSend} style={{ marginLeft: '10px' }}>
         Set Nested Folder
       </button>
-      <button onClick={() => handleGradeUpdate()}>UPDATE GRADES</button>
+      <button className="btn" onClick={() => handleGradeUpdate(project)}>UPDATE INDIVIDUAL GRADE</button>
 
       {/* Inline file structure viewer */}
       {showFileTreeInline && fileTree && (
