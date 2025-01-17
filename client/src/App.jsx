@@ -316,7 +316,7 @@ const App = () => {
 
   return (
     <div className="app-container">
-      <h1 className="app-title">TA Too EZ</h1>
+      <h1 className="app-title">TA Tool Kit</h1>
       <p className="app-subtitle">
         Enter up to 50 GitHub links. Let me know if there are features you want added.
       </p>
