@@ -1,34 +1,44 @@
-/* App.css */
-
-/* Futuristic "Tron" theme colors */
 :root {
-  --bg-color: #0d0f10;       /* Dark background */
-  --card-bg: #191c1f;       /* Slightly lighter card background */
-  --accent-color: #00fce2;   /* Neon aqua */
-  --accent-color-2: #ff00fb; /* Neon magenta (optional) */
+  --card-bg: #7b17d8;
+  --accent-color: #e3fc00;
+  --accent-color-2: #ff00fb;
   --text-color: #e8e8e8;
   --border-color: #00fce2;
   --box-shadow-neon: 0 0 8px rgba(0, 252, 226, 0.8);
 }
 
 body {
-  background-color: var(--bg-color);
+  background: linear-gradient(145deg, #6c1fb4, #18b49a4b);
   color: var(--text-color);
-  font-family: 'Orbitron', 'Roboto', sans-serif; /* Orbitron or a futuristic font */
+  font-family: 'Orbitron', 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
 }
 
-.app-container {
+html, body {
+  height: 100%;
+  overflow-x: hidden;
+}
+.top-container {
   display: flex;
+  width: 98%;
+}
+.app-container {
+  display: grid;
+  grid-template-areas:
+    "title title title"
+    "cohort  multi ocr"
+    "buttons buttons cohort "
+    "projects projects projects"; 
+  grid-template-columns: 1fr 1fr 1fr; 
+  grid-gap: 20px;
   max-width: 1800px;
-  flex-direction: column;
   margin: 0 auto;
   padding: 20px;
 }
 
-
 .app-title {
+  grid-area: title;
   display: flex;
   font-size: 2.4rem;
   align-items: center;
@@ -44,6 +54,51 @@ body {
   margin-bottom: 20px;
 }
 
+.ocr-header {
+  grid-area: ocr;
+  background-color: rgba(145, 31, 197, 0.288);
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0px 5px white;
+  width: 25%;
+  height: auto;
+  margin: auto auto;
+}
+
+.multi-uploader {
+  grid-area: multi;
+  background-color: rgba(145, 31, 197, 0.288);
+  padding: 20px;
+  width: 30%;
+  border-radius: 20px;
+  box-shadow: 0 0px 5px white;
+  margin: 0 auto;
+  margin: auto auto;
+}
+
+.main-btns {
+  grid-area: buttons;
+}
+
+.cohort-init {
+  grid-area: cohort;
+  background-color: rgba(145, 31, 197, 0.288);
+  padding: 20px;
+  width: 25%;
+  border-radius: 20px;
+  box-shadow: 0 0px 5px white;
+  height: auto;
+  margin: auto auto;
+}
+
+.projects-grid {
+  grid-area: projects; 
+  display: grid;
+  margin: 20px;
+  grid-template-columns: repeat(3, minmax(300px, 1fr));
+  gap: 16px;
+}
+
 .btn {
   display: inline-block;
   padding: 8px 16px;
@@ -52,8 +107,8 @@ body {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #fff;
-  background: linear-gradient(145deg, #48117a, #046b5a4b);
+  color: #f0e112;
+  background: linear-gradient(145deg, #48117a, #09e9cb48);
   border: 1px solid #666;
   border-radius: 5px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
@@ -62,14 +117,12 @@ body {
   cursor: pointer;
 }
 
-
 .btn:hover {
   transform: translateY(-2px);
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.4),
               -2px -2px 6px rgba(255, 255, 255, 0.03);
   background: linear-gradient(145deg, #f11a7e, #22f107);
 }
-
 
 .btn:active {
   transform: translateY(1px);
@@ -81,16 +134,10 @@ body {
   outline: none;
 }
 
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(300px, 1fr));
-  gap: 16px;
-}
-
 .project-card {
   background-color: var(--card-bg);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 20px;
   padding: 15px;
   box-shadow: 0 0 6px rgba(5, 187, 87, 0.938);
   transition: box-shadow 0.3s ease;
@@ -141,13 +188,12 @@ body {
 }
 
 .pass {
-  color: #00fce2; 
+  color: #00fce2;
 }
 .fail {
-  color: #ff2281; 
+  color: #ff2281;
 }
 
-/* iFrame preview */
 .iframe-container {
   margin-top: 10px;
 }
@@ -165,31 +211,8 @@ body {
   background-color: #ffffff;
 }
 
-
 .add-project-btn {
   margin-top: 16px;
-}
-
-
- html, body {
-  height: 100%;
-  overflow-x: hidden;
-} 
-
-#project-side-panel {
-  position: fixed;
-  top: 50px; 
-  right: 20px; 
-  width: 300px; 
-  padding: 20px;
-  color: rgb(255, 255, 255);
-  background-color: #8f15e096;
-  border: 1px solid #e9dbdb;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  z-index: 1000;
-  overflow-y: auto; 
-  max-height: calc(100vh - 100px); 
 }
 
 #project-side-panel .criteria-box {
@@ -202,15 +225,56 @@ body {
 
 @media screen and (max-width: 768px) {
   #project-side-panel {
-    width: 100%; 
+    width: 100%;
     max-width: 100%;
     right: 0;
     left: 0;
     border-radius: 0;
   }
+
+  .app-container {
+    grid-template-areas:
+      "title"
+      "ocr"
+      "multi"
+      "buttons"
+      "cohort"
+      "projects";
+    grid-template-columns: 1fr;
+  }
 }
 
-#add-btn{
+.ocr > h2 {
+  font-size: 2rem;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 10px;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(19, 223, 189, 0.8);
+}
+
+.ocr {
+  margin: 10px 10px;
+}
+.cohort-container > h2{
+  font-size: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(19, 223, 189, 0.8);
+}
+
+.gh-upload > h2 {
+  font-size: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(19, 223, 189, 0.8);
+}
+
+#add-btn {
   background-color: green;
   width: 50px;
   height: 50px;
@@ -231,6 +295,46 @@ body {
   border-radius: 10px;
 }
 
+.app-container {
+  display: grid;
+  grid-template-columns: 85% 15%;
+  grid-template-rows: auto; 
+  grid-template-areas:
+    "main panel";
+  gap: 20px;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main-content {
+  grid-area: main;
+  width: 100%;
+}
+
+#project-side-panel {
+  grid-area: panel;
+  position: fixed; 
+  right:0%;   
+  width: 15%;        
+  height: 100vh;       
+  overflow-y: auto;    
+  background-color: #8f15e096;
+  border: 1px solid #e9dbdb;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
+}
+
+#project-side-panel > h2 {
+  font-size: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+  text-shadow: 0 0 8px rgba(19, 223, 189, 0.8);
+}
 /* This is for a color loading screen im trying to make */
 
 /* .project-card {

@@ -43,6 +43,12 @@ const waitForKeyPress = (key) => {
       await page.click('.Button--primary');
       await page.keyboard.press('Enter');
       await page.waitForNavigation({ waitUntil: 'networkidle2' });
+      // await page.type('input[type="email"]', `${process.env.FSA_EMAIL}`);
+      // await page.keyboard.press('Enter');
+      // await page.waitForNetworkIdle({ waitUntil: 'networkidle2'});
+      // await page.type('input[type="password"]', `${process.env.FSA_PW}`);
+      // await page.keyboard.press('Enter');
+      // await page.waitForNavigation({ waitUntil: 'networkidle2'});
       await waitForKeyPress(']');
     } else {
       //regular email / pw
@@ -58,6 +64,7 @@ const waitForKeyPress = (key) => {
       await page.keyboard.press('Enter');
       await page.waitForNavigation({ waitUntil: 'networkidle2' }); // waiting for the completion first
     }
+    // await page.waitForNavigation({ waitUntil: 'networkidle0'});
     await page.goto(`https://fullstack.instructure.com/courses/${classId}/gradebook`, { waitUntil: 'networkidle0' });
 
     // actions (e.g., filtering and updating grades)

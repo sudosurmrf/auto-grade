@@ -5,7 +5,9 @@ import MultiFileUploader from './components/MultipleFileUploader';
 import { useDeleteProjectsMutation } from './services/graderApi';
 import ProjectDetailsPanel from './components/ProjectDetailsPanel';
 import GradingCriteria from './grading-criteria/GradingCriteria';
+import OcrReader from './components/OcrReader';
 import './App.css'
+import CohortInit from './components/CohortInt';
 
 const App = () => {
   const [nestedFolder, setNestedFolder] = useState('');
@@ -332,21 +334,35 @@ const App = () => {
     setProjects(updatedProjects);
   };
 console.log(projects);
-  return (
-    <div className="app-container">
-      <h1 className="app-title">TA Tool Kit</h1>
+return (
+  <div className="app-container">
+    <div className="main-content">
+    <h1 className="app-title">TA Tool Kit</h1>
+
+    
+<div className="top-container">
+
+    <div className="multi-uploader">
+      <MultiFileUploader onLinksExtracted={handleLinkExtract} />
       <p className="app-subtitle">
         Enter up to 50 GitHub links. Let me know if there are features you want added.
       </p>
-
-      <div>
-        <button onClick={clearProjectData} className="btn">
-          Clear All Project Data
-        </button>
-        <button onClick={handleAutoGradeAll} className="btn">
-          Grade All / Render All
-        </button>
-        <input
+    </div>
+    <div className="cohort-init">
+      <CohortInit />
+    </div>
+    <div className="ocr-header">
+      <OcrReader />
+    </div>
+</div>
+    <div className="main-btns">
+      <button onClick={clearProjectData} className="btn">
+        Clear All Project Data
+      </button>
+      <button onClick={handleAutoGradeAll} className="btn">
+        Grade All / Render All
+      </button>
+      <input
         className="btn"
         type="number"
         placeholder="Enter The Class ID Here"
@@ -361,7 +377,7 @@ console.log(projects);
           );
         }}
       />
-        <button
+      <button
         className="btn"
         onClick={() => {
           if (!selectedProject) return;
@@ -381,35 +397,37 @@ console.log(projects);
       >
         Click To Set A Test Student
       </button>
-      </div>
+    </div>
 
-      <MultiFileUploader onLinksExtracted={handleLinkExtract} />
+    <div className="projects-grid">
+      {projects.map((project, index) => {
+        const {
+          autoGradeResult,
+          status = '',
+          failBlink = false,
+          isCharging,
+        } = project;
+        const shouldShowGreen =
+          status === 'charging' ||
+          (status === 'success' && !allGradingComplete);
 
-      <div className="projects-grid">
-        {projects.map((project, index) => {
-          const {
-            autoGradeResult,
-            status = '',
-            failBlink = false,
-            isCharging,
-          } = project;
-          const shouldShowGreen =
-            status === 'charging' ||
-            (status === 'success' && !allGradingComplete);
+        const shouldShowRed = status === 'fail';
+        const previewUrl = autoGradeResult?.previewUrl || null;
 
-          const shouldShowRed = status === 'fail';
-          const previewUrl = autoGradeResult?.previewUrl || null;
-
-          return (
-            <div
+        return (
+          <div
             className="project-card"
             key={project.id}
             onClick={() => handleProjectCardClick(project)}
           >
             {isCharging && (
-              <div className={`charge-overlay ${project.failBlink ? 'fail-blink' : ''}`} />
+              <div
+                className={`charge-overlay ${
+                  project.failBlink ? 'fail-blink' : ''
+                }`}
+              />
             )}
-        
+
             {(shouldShowGreen || shouldShowRed) && (
               <div
                 className={`charge-overlay ${
@@ -417,41 +435,39 @@ console.log(projects);
                 } ${failBlink ? 'fail-blink' : ''}`}
               />
             )}
-        
+
             <h1>{project.studentName}</h1>
             <h3>{project.studentId}</h3>
-        
+
             <label>Module:</label>
             <select
               value={project.moduleNumber}
               onChange={(e) => handleModuleChange(index, e.target.value)}
             >
-              {GradingCriteria.map(criteria => (
-                <option key={criteria.module} value={criteria.module.replace('Module ', '')}>
+              {GradingCriteria.map((criteria) => (
+                <option
+                  key={criteria.module}
+                  value={criteria.module.replace('Module ', '')}
+                >
                   {criteria.module}
                 </option>
               ))}
             </select>
-        
+
             <label>GitHub URL:</label>
             <input
               type="text"
               value={project.repoUrl}
               onChange={(e) => handleRepoUrlChange(index, e.target.value)}
             />
-        
+
             <button onClick={() => handleAutoGrade(index)} className="btn">
               Render
             </button>
             {/* <button onClick={() => handleManualGrade(index)} className="btn">
               Manual Grade
             </button> */}
-      
-            {/* {project.manualGrade !== null && (
-              <div style={{ marginTop: '10px' }}>
-                <strong>Manual Grade: </strong> {project.manualGrade}
-              </div>
-            )} */}
+
             {autoGradeResult && (
               <div className="auto-grade-results">
                 <h4>Auto-Grade Results</h4>
@@ -469,6 +485,7 @@ console.log(projects);
                 </ul>
               </div>
             )}
+
             {previewUrl && (
               <div className="iframe-container">
                 <h4>Preview</h4>
@@ -479,39 +496,38 @@ console.log(projects);
                 />
               </div>
             )}
+
             <ProjectCard
               project={project}
               nestedFolder={nestedFolder}
               setNestedFolder={setNestedFolder}
-          
             />
           </div>
         );
-        })}
-      </div>
-
-      {projects.length < 50 && (
-        <button onClick={handleAddProject} className="btn add-project-btn">
-          Add Another Project
-        </button>
-      )}
-
-      {/* Right panel for detailed project view */}
-      {selectedProject && (
-        <ProjectDetailsPanel
-          id="project-side-panel"
-          gradingCriteria={GradingCriteria}
-          selectedProject={selectedProject}
-          setSelectedGrade={setSelectedGrade}
-          setSelectedNotes={setSelectedNotes}
-          handleSaveNotes={handleSaveNotes}
-          projects={projects}
-          setProjects={setProjects}
-        />
-      )}
+      })}
     </div>
-  );
-};
 
+    {projects.length < 50 && (
+      <button onClick={handleAddProject} className="btn add-project-btn">
+        Add Another Project
+      </button>
+    )}
+</div>
+    {/* Right panel for detailed project view */}
+    {selectedProject && (
+      <ProjectDetailsPanel
+        id="project-side-panel"
+        gradingCriteria={GradingCriteria}
+        selectedProject={selectedProject}
+        setSelectedGrade={setSelectedGrade}
+        setSelectedNotes={setSelectedNotes}
+        handleSaveNotes={handleSaveNotes}
+        projects={projects}
+        setProjects={setProjects}
+      />
+    )}
+  </div>
+);
+}
 
 export default App;

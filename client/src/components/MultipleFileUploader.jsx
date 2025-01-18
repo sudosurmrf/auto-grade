@@ -44,10 +44,13 @@ export default function MultiFileUploader({ onLinksExtracted }) {
   };
 
   return (
-    <div style={{ marginBottom: '16px' }}>
-      <label style={{ marginRight: '8px', fontWeight: 'bold' }}>
-        Upload .html files with GitHub links that are found on the FSA canvas page for each assignment on the top right called "Download Submissions":
-      </label>
+    <div className="gh-upload" style={{ marginBottom: '16px', textWrap: 'wrap', width: '300px'}}>
+      <h2>Multi Project Upload</h2>
+      
+        <p>
+          Upload .html files with GitHub links that are found on the FSA canvas page for each assignment on the top right called "Download Submissions":
+          </p>
+  
       <input
         // className="btn"
         type="file"

@@ -140,8 +140,8 @@ const ProjectDetailsPanel = ({
         Notes:
         <textarea value={localNotes} onChange={handleNotesChange} />
       </label>
-      <button onClick={handleSaveNotes}>Save Notes</button>
-      <button onClick={handleSaveAssignedPoints}>Save Assigned Points</button>
+      <button className="btn" onClick={handleSaveNotes}>Save Notes</button>
+      <button className="btn" onClick={handleSaveAssignedPoints}>Save Assigned Points</button>
       <div>
         <h3>Criteria for Module {selectedProject.moduleNumber}</h3>
         <ul>
