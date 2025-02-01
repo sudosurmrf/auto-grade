@@ -19,7 +19,7 @@ const CohortInit = () => {
     if (!csvFile) return;
 
     Papa.parse(csvFile, {
-      header: true,
+      header: false,
       skipEmptyLines: true,
       complete: (results) => {
         const studentsArray = [];
@@ -39,6 +39,7 @@ const CohortInit = () => {
         });
 
         setParsedStudents(studentsArray);
+        console.log(studentsArray);
       },
       error: (err) => {
         console.error("CSV Parse Error:", err);
@@ -133,19 +134,19 @@ const CohortInit = () => {
         Setup Cohort
       </button>
 
-      {parsedStudents.length > 0 && (
+      {/* {parsedStudents.length > 0 && (
         <div style={{ marginTop: "1rem" }}>
           <h4>Parsed Students (Preview)</h4>
           <pre>{JSON.stringify(parsedStudents, null, 2)}</pre>
         </div>
-      )}
+      )} */}
 
-      {jsonResult && (
+      {/* {jsonResult && (
         <div style={{ marginTop: "1rem" }}>
           <h4>Final Data Structure</h4>
           <pre>{JSON.stringify(jsonResult, null, 2)}</pre>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

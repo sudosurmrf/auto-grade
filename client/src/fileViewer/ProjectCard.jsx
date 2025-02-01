@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAddNestedMutation, useLazyGetFileStructureQuery, useUpdateGradesMutation } from '../services/graderApi';
 import InlineFileStructureViewer from './InlineFileStructureViewer';
 import ModalFileStructureViewer from './ModalFileStructureViewer';
+import '../coolButtons.css';
 
 
 export default function ProjectCard({ project, nestedFolder, setNestedFolder }) {
@@ -67,24 +68,48 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
   };
 
   return (
-    <div style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
-      <p>Repo URL: {project.repoUrl}</p>
-      <button className="btn" onClick={handleShowFileStructure}>Show File Structure (Inline)</button>
-      <button className="btn" onClick={handleShowModal} style={{ marginLeft: '10px' }}>
-        Expand Full View (Modal)
-      </button>
-      <button className="btn" onClick={handleNestedSend} style={{ marginLeft: '10px' }}>
-        Set Nested Folder
-      </button>
-      <button className="btn" onClick={() => handleGradeUpdate(project)}>UPDATE INDIVIDUAL GRADE</button>
+    <>
+    <div className="inner-card">
+      
+      <a className="btn" onClick={handleShowFileStructure}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Show File Structure (Inline)
+      </a>
+
+       <a className="btn" onClick={handleShowModal}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Expand Full View (Modal)
+      </a>
+
+      <a className="btn" onClick={handleNestedSend}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          Set Nested Folder
+      </a>
+
+      <a className="btn" onClick={() => handleGradeUpdate(project)}>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          UPDATE INDIVIDUAL GRADE
+      </a>
 
       {/* Inline file structure viewer */}
       {showFileTreeInline && fileTree && (
         <InlineFileStructureViewer
-          fileTree={fileTree}
-          onClose={handleHideFileStructure}
-          nestedFolder={nestedFolder}
-          setNestedFolder={setNestedFolder}
+        fileTree={fileTree}
+        onClose={handleHideFileStructure}
+        nestedFolder={nestedFolder}
+        setNestedFolder={setNestedFolder}
         />
       )}
 
@@ -95,7 +120,9 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
         fileTree={fileTree}
         nestedFolder={nestedFolder}
         setNestedFolder={setNestedFolder}
-      />
+        />
     </div>
+    <p>Repo URL: {project.repoUrl}</p>
+        </>
   );
 }

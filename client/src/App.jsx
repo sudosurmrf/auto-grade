@@ -9,6 +9,7 @@ import OcrReader from './components/OcrReader';
 import './App.css'
 import CohortInit from './components/CohortInt';
 
+
 const App = () => {
   const [nestedFolder, setNestedFolder] = useState('');
   //allows up to 50 proj currently (memory intensive, so be careful)
@@ -335,6 +336,8 @@ const App = () => {
   };
 console.log(projects);
 return (
+  <>
+  <div className="backdrop"></div>
   <div className="app-container">
     <div className="main-content">
     <h1 className="app-title">TA Tool Kit</h1>
@@ -356,12 +359,18 @@ return (
     </div>
 </div>
     <div className="main-btns">
-      <button onClick={clearProjectData} className="btn">
+      <a onClick={clearProjectData} className="btn">
+        {/* <span></span>
+        <span></span>
+        <span></span> */}
         Clear All Project Data
-      </button>
-      <button onClick={handleAutoGradeAll} className="btn">
+      </a>
+      <a onClick={handleAutoGradeAll} className="btn">
+        {/* <span></span>
+        <span></span>
+        <span></span> */}
         Grade All / Render All
-      </button>
+      </a>
       <input
         className="btn"
         type="number"
@@ -376,27 +385,27 @@ return (
             }))
           );
         }}
-      />
-      <button
+        />
+      <a
         className="btn"
         onClick={() => {
           if (!selectedProject) return;
           setProjects((prevProjects) =>
             prevProjects.map((proj) =>
               proj.id === selectedProject.id
-                ? {
-                    ...proj,
-                    studentName: 'Test Student',
-                    studentId: 14549,
-                    classId: 1059,
-                  }
-                : proj
-            )
-          );
-        }}
-      >
+          ? {
+            ...proj,
+            studentName: 'Test Student',
+            studentId: 14549,
+            classId: 1059,
+          }
+          : proj
+        )
+      );
+    }}
+    >
         Click To Set A Test Student
-      </button>
+      </a>
     </div>
 
     <div className="projects-grid">
@@ -408,33 +417,33 @@ return (
           isCharging,
         } = project;
         const shouldShowGreen =
-          status === 'charging' ||
-          (status === 'success' && !allGradingComplete);
-
+        status === 'charging' ||
+        (status === 'success' && !allGradingComplete);
+        
         const shouldShowRed = status === 'fail';
         const previewUrl = autoGradeResult?.previewUrl || null;
-
+        
         return (
           <div
-            className="project-card"
-            key={project.id}
-            onClick={() => handleProjectCardClick(project)}
+          className="project-card"
+          key={project.id}
+          onClick={() => handleProjectCardClick(project)}
           >
             {isCharging && (
               <div
-                className={`charge-overlay ${
-                  project.failBlink ? 'fail-blink' : ''
+              className={`charge-overlay ${
+                project.failBlink ? 'fail-blink' : ''
                 }`}
-              />
-            )}
+                />
+              )}
 
             {(shouldShowGreen || shouldShowRed) && (
               <div
-                className={`charge-overlay ${
-                  shouldShowGreen ? 'charging-green' : 'charging-red'
+              className={`charge-overlay ${
+                shouldShowGreen ? 'charging-green' : 'charging-red'
                 } ${failBlink ? 'fail-blink' : ''}`}
-              />
-            )}
+                />
+              )}
 
             <h1>{project.studentName}</h1>
             <h3>{project.studentId}</h3>
@@ -443,11 +452,11 @@ return (
             <select
               value={project.moduleNumber}
               onChange={(e) => handleModuleChange(index, e.target.value)}
-            >
+              >
               {GradingCriteria.map((criteria) => (
                 <option
-                  key={criteria.module}
-                  value={criteria.module.replace('Module ', '')}
+                key={criteria.module}
+                value={criteria.module.replace('Module ', '')}
                 >
                   {criteria.module}
                 </option>
@@ -459,16 +468,16 @@ return (
               type="text"
               value={project.repoUrl}
               onChange={(e) => handleRepoUrlChange(index, e.target.value)}
-            />
+              />
 
-            <button onClick={() => handleAutoGrade(index)} className="btn">
+            <a onClick={() => handleAutoGrade(index)} className="btn">
               Render
-            </button>
+            </a>
             {/* <button onClick={() => handleManualGrade(index)} className="btn">
               Manual Grade
-            </button> */}
+              </button> */}
 
-            {autoGradeResult && (
+            {/* {autoGradeResult && (
               <div className="auto-grade-results">
                 <h4>Auto-Grade Results</h4>
                 {autoGradeResult.success ? (
@@ -484,7 +493,7 @@ return (
                   ))}
                 </ul>
               </div>
-            )}
+            )} */}
 
             {previewUrl && (
               <div className="iframe-container">
@@ -493,7 +502,7 @@ return (
                   title={`preview-${project.id}`}
                   src={previewUrl}
                   className="preview-iframe"
-                />
+                  />
               </div>
             )}
 
@@ -501,7 +510,7 @@ return (
               project={project}
               nestedFolder={nestedFolder}
               setNestedFolder={setNestedFolder}
-            />
+              />
           </div>
         );
       })}
@@ -516,17 +525,18 @@ return (
     {/* Right panel for detailed project view */}
     {selectedProject && (
       <ProjectDetailsPanel
-        id="project-side-panel"
-        gradingCriteria={GradingCriteria}
-        selectedProject={selectedProject}
-        setSelectedGrade={setSelectedGrade}
-        setSelectedNotes={setSelectedNotes}
-        handleSaveNotes={handleSaveNotes}
-        projects={projects}
-        setProjects={setProjects}
+      id="project-side-panel"
+      gradingCriteria={GradingCriteria}
+      selectedProject={selectedProject}
+      setSelectedGrade={setSelectedGrade}
+      setSelectedNotes={setSelectedNotes}
+      handleSaveNotes={handleSaveNotes}
+      projects={projects}
+      setProjects={setProjects}
       />
     )}
   </div>
+    </>
 );
 }
 

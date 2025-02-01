@@ -2,17 +2,18 @@
   --card-bg: #7b17d8;
   --accent-color: #e3fc00;
   --accent-color-2: #ff00fb;
-  --text-color: #e8e8e8;
+  --text-color: #ffffff;
   --border-color: #00fce2;
   --box-shadow-neon: 0 0 8px rgba(0, 252, 226, 0.8);
 }
 
 body {
-  background: linear-gradient(145deg, #6c1fb4, #18b49a4b);
+  background: linear-gradient(145deg,#400583, #290a31d0);
   color: var(--text-color);
   font-family: 'Orbitron', 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
+	color: #fff;
 }
 
 html, body {
@@ -77,7 +78,12 @@ html, body {
 }
 
 .main-btns {
-  grid-area: buttons;
+  margin:20px 10px;
+  padding: 10px;
+  padding-bottom: 30px;
+  display: flex;
+  justify-content: center;
+
 }
 
 .cohort-init {
@@ -100,34 +106,11 @@ html, body {
 }
 
 .btn {
-  display: inline-block;
   padding: 8px 16px;
   margin: 8px 4px;
-  font-family: 'Arial', sans-serif;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #f0e112;
-  background: linear-gradient(145deg, #48117a, #09e9cb48);
-  border: 1px solid #666;
-  border-radius: 5px;
-  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4),
-              -2px -2px 6px rgba(255, 255, 255, 0.03);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  cursor: pointer;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.4),
-              -2px -2px 6px rgba(255, 255, 255, 0.03);
-  background: linear-gradient(145deg, #f11a7e, #22f107);
-}
-
-.btn:active {
-  transform: translateY(1px);
-  box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.5);
-  background: linear-gradient(145deg, #333, #333);
+  font-weight: 400;
+  border-radius: 8px;
+  max-width: 200px;
 }
 
 .btn:focus {
@@ -143,6 +126,10 @@ html, body {
   transition: box-shadow 0.3s ease;
 }
 
+.project-card > a {
+  align-items: center;
+  justify-content: center;
+}
 .project-card:hover {
   box-shadow: 0 0 12px rgba(0, 252, 226, 0.25);
 }
@@ -313,7 +300,6 @@ html, body {
 }
 
 #project-side-panel {
-  grid-area: panel;
   position: fixed; 
   right:0%;   
   width: 15%;        
@@ -327,6 +313,9 @@ html, body {
   
 }
 
+.project-card > input {
+  max-width: 300px;
+}
 #project-side-panel > h2 {
   font-size: 1.5rem;
   align-items: center;
@@ -335,6 +324,54 @@ html, body {
   color: var(--accent-color);
   text-shadow: 0 0 8px rgba(19, 223, 189, 0.8);
 }
+
+.project-card {
+  --list: #ffbc00, #ff0058;
+  --grad: linear-gradient(70deg, var(--list));
+  position: relative;
+  border: solid 4px #1c489b00;
+  border-radius: 1em;
+  font: 200 1.2rem;
+  text-shadow: 1px 1px 2px;
+  background: conic-gradient(rgba(0, 0, 0, 0.219) 0 0) padding-box,
+    var(--grad) border-box;
+
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--grad);
+    filter: blur(1em);
+    content: '';
+  }
+
+  &:nth-child(6n + 1) {
+    --list: #5eff003d, #f10c0c34;
+  }
+  &:nth-child(6n + 2) {
+    --list: #03a8f428, #ff00592d;
+  }
+  &:nth-child(6n + 3) {
+    --list: #4fff031c, #00d0ff34;
+  }
+  &:nth-child(6n + 4) {
+    --list: #05ff822d, #ff005571;
+  }
+  &:nth-child(6n + 5) {
+    --list: #efff0841, #660b9b86;
+  }
+  &:nth-child(6n + 6) {
+    --list: #e40ec734, #f712f75d;
+  }
+}
+
+.inner-card > p {
+  font-size: 1rem;
+  max-width: 200px;
+}
+
+
+
 /* This is for a color loading screen im trying to make */
 
 /* .project-card {
