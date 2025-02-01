@@ -8,6 +8,7 @@ import GradingCriteria from './grading-criteria/GradingCriteria';
 import OcrReader from './components/OcrReader';
 import './App.css'
 import CohortInit from './components/CohortInt';
+import GridBackground from './GridBackground';
 
 
 const App = () => {
@@ -337,7 +338,9 @@ const App = () => {
 console.log(projects);
 return (
   <>
-  <div className="backdrop"></div>
+  <div className="backdrop" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+    <GridBackground/>
+  </div>
   <div className="app-container">
     <div className="main-content">
     <h1 className="app-title">TA Tool Kit</h1>

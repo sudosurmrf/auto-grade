@@ -339,7 +339,6 @@ html, body {
   &::before {
     position: absolute;
     inset: 0;
-    z-index: -1;
     background: var(--grad);
     filter: blur(1em);
     content: '';
