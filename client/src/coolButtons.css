@@ -17,6 +17,13 @@
 
 .inner-card > a {
   margin: 40px 5px;
+  display: inline-block; 
+  width: 200px; 
+  height: auto;     
+  font-size: clamp(12px, 16px, 1em);
+  /* white-space: wrap; */
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .btn {
@@ -30,6 +37,7 @@
   text-decoration: none;
   text-transform: uppercase;
   overflow: hidden;
+  
   transition: 0.6s;
   letter-spacing: 3px;
   -webkit-box-reflect: below 2px linear-gradient(transparent, #3a088a49);

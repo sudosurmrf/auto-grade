@@ -122,7 +122,6 @@ export default function ProjectCard({ project, nestedFolder, setNestedFolder }) 
         setNestedFolder={setNestedFolder}
         />
     </div>
-    <p>Repo URL: {project.repoUrl}</p>
         </>
   );
 }
