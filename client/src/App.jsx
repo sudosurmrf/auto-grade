@@ -338,7 +338,7 @@ const App = () => {
 console.log(projects);
 return (
   <>
-  <div className="backdrop" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}>
+  <div className="backdrop" style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, pointerEvents: 'none'}}>
     <GridBackground/>
   </div>
   <div className="app-container">
