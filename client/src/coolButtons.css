@@ -7,10 +7,16 @@
 
 .inner-card {
   display: flex;
-  height:250px;
-  width: auto;
+  height:auto;
+  width: 100%;
   justify-content: center;
   align-items: center;
+  position: relative;
+  z-index: 3;
+}
+
+.inner-card > a {
+  margin: 40px 5px;
 }
 
 .btn {
@@ -38,9 +44,9 @@
 }
 
 .btn:hover {
-  background: #03e9f4;
-  color: #050801;
-  box-shadow: 0 0 5px #03e9f4,
+  background: #04fd3a;
+  color: #050801de;
+  box-shadow: 0 0 5px #03f42b,
               0 0 25px #03e9f4,
               0 0 50px #03e9f4,
               0 0 100px #03e9f4;

@@ -74,7 +74,7 @@ export default function InlineFileStructureViewer({
   }
 
   return (
-    <div style={{ border: '1px solid #ccc', marginTop: '10px' }}>
+    <div className="inline-fs">
       <div style={{ display: 'flex', height: '400px' }}>
         {/* Left side: file tree */}
         <div

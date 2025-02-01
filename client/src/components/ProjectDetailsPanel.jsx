@@ -149,14 +149,14 @@ const ProjectDetailsPanel = ({
             <li key={criteria.id} className="criteria-box">
               <h4>{criteria.title}</h4>
               <p>{criteria.description}</p>
-              <div>
-                <button id="add-btn" onClick={() => handleIncreasePoints(criteria.id)}>
+              <div style={{display: 'flex'}}>
+                <a className="btn" style={{backgroundColor: '#008079'}} onClick={() => handleIncreasePoints(criteria.id)}>
                   +
-                </button>
+                </a>
                 <span>Assigned Points: {assignedPointsState[criteria.id] || 0}</span>
-                <button id="sub-btn" onClick={() => handleDecreasePoints(criteria.id)}>
+                <a className="btn"style={{backgroundColor: '#2f1eb2'}} onClick={() => handleDecreasePoints(criteria.id)}>
                   -
-                </button>
+                </a>
               </div>
               {criteria.subGradingScale && (
                 <ul>

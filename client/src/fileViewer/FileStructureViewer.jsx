@@ -76,7 +76,7 @@ export default function FileStructureViewer({
   }
 
   return (
-    <div style={{ border: '1px solid #ccc', display: 'flex', height: '600px', marginTop: '10px' }}>
+    <div style={{ border: '1px solid #ccc', height: '600px', marginTop: '10px' }}>
       {/* Left side: file structure */}
       <div style={{ width: '250px', overflowY: 'auto', borderRight: '1px solid #ccc', padding: '8px' }}>
         <button onClick={onClose} style={{ marginBottom: '10px' }}>

@@ -1,7 +1,7 @@
 :root {
   --card-bg: #7b17d8;
   --accent-color: #e3fc00;
-  --accent-color-2: #ff00fb;
+  --accent-color-2: #7700ff;
   --text-color: #ffffff;
   --border-color: #12c5f17c;
   --box-shadow-neon: 0 0 8px rgba(0, 252, 226, 0.8);
@@ -78,6 +78,8 @@ html, body {
   box-shadow: 0 0px 5px white;
   margin: 0 auto;
   margin: auto auto;
+  text-align: center;
+  contain: content;
 }
 
 .main-btns {
@@ -96,9 +98,9 @@ html, body {
 
 .cohort-init {
   grid-area: cohort;
-  background-color: rgba(145, 31, 197, 0.288);
+  background-color: rgba(38, 5, 53, 0.616);
   padding: 20px;
-  width: 25%;
+  width: 30%;
   border-radius: 20px;
   box-shadow: 0 0px 5px white;
   height: auto;
@@ -130,8 +132,9 @@ html, body {
   border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 15px;
-  box-shadow: 0 0 6px rgba(5, 187, 87, 0.938);
+  box-shadow: 0 0 10px rgba(239, 248, 112, 0.767);
   transition: box-shadow 0.3s ease;
+  contain:content;
 }
 
 .project-card > a {
@@ -160,10 +163,12 @@ html, body {
   width: 100%;
   padding: 6px;
   margin-bottom: 10px;
-  background-color: #1e2124;
+  background-color: #1e2124c9;
   border: 1px solid var(--border-color);
   color: var(--text-color);
   border-radius: 4px;
+  position: relative;
+  z-index: 5;
 }
 
 .auto-grade-results {
@@ -193,6 +198,7 @@ html, body {
   margin-top: 10px;
   position: sticky;
   z-index: 2;
+  resize: both;
 }
 
 .iframe-container h4 {
@@ -355,7 +361,7 @@ html, body {
   }
 
   &:nth-child(6n + 1) {
-    --list: #5eff0042, #f10c0c56;
+    --list: #e21d0e27, #14c75f73;
   }
   &:nth-child(6n + 2) {
     --list: #03a8f448, #ff00594f;
@@ -364,13 +370,13 @@ html, body {
     --list: #4fff0333, #00d0ff67;
   }
   &:nth-child(6n + 4) {
-    --list: #05ff822d, #ff005571;
+    --list: #d319da2d, #1598c071;
   }
   &:nth-child(6n + 5) {
     --list: #efff0841, #660b9b86;
   }
   &:nth-child(6n + 6) {
-    --list: #e40ec734, #f712f75d;
+    --list: #e6f51356, #f7129f5d;
   }
 }
 
