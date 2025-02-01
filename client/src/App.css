@@ -3,7 +3,7 @@
   --accent-color: #e3fc00;
   --accent-color-2: #ff00fb;
   --text-color: #ffffff;
-  --border-color: #00fce2;
+  --border-color: #12c5f17c;
   --box-shadow-neon: 0 0 8px rgba(0, 252, 226, 0.8);
 }
 
@@ -23,6 +23,9 @@ html, body {
 .top-container {
   display: flex;
   width: 98%;
+}
+.top-container > div {
+  z-index: 1;
 }
 .app-container {
   display: grid;
@@ -68,7 +71,7 @@ html, body {
 
 .multi-uploader {
   grid-area: multi;
-  background-color: rgba(145, 31, 197, 0.288);
+  background-color: rgba(73, 38, 129, 0.308);
   padding: 20px;
   width: 30%;
   border-radius: 20px;
@@ -83,7 +86,12 @@ html, body {
   padding-bottom: 30px;
   display: flex;
   justify-content: center;
+  z-index: 1;
+}
 
+.main-btns > a {
+  background-color: #df149baf;
+  color: white;
 }
 
 .cohort-init {
@@ -183,6 +191,8 @@ html, body {
 
 .iframe-container {
   margin-top: 10px;
+  position: sticky;
+  z-index: 2;
 }
 
 .iframe-container h4 {
@@ -333,7 +343,7 @@ html, body {
   border-radius: 1em;
   font: 200 1.2rem;
   text-shadow: 1px 1px 2px;
-  background: conic-gradient(rgba(0, 0, 0, 0.219) 0 0) padding-box,
+  background: conic-gradient(rgba(67, 4, 109, 0.568) 0 0) padding-box,
     var(--grad) border-box;
 
   &::before {
@@ -345,13 +355,13 @@ html, body {
   }
 
   &:nth-child(6n + 1) {
-    --list: #5eff003d, #f10c0c34;
+    --list: #5eff0042, #f10c0c56;
   }
   &:nth-child(6n + 2) {
-    --list: #03a8f428, #ff00592d;
+    --list: #03a8f448, #ff00594f;
   }
   &:nth-child(6n + 3) {
-    --list: #4fff031c, #00d0ff34;
+    --list: #4fff0333, #00d0ff67;
   }
   &:nth-child(6n + 4) {
     --list: #05ff822d, #ff005571;
